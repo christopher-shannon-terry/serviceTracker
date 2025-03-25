@@ -1,7 +1,5 @@
 
-
-public class createAccount {
-    /*
+/*
      * This file will implement a create account method (possibly use sign in with google)
      * When the student is creating their account, they will be prompted to enter their information
         * First name
@@ -24,5 +22,8 @@ public class createAccount {
     *
     * If all checks pass, the account will be created and the student will be prompted to login (or it will automatically log them in)
     * If any checks fail, the student will be prompted to fix the issue and try again
-    */
+*/
+
+public class createAccount {
+
 }

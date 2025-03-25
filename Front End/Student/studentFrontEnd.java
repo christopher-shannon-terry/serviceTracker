@@ -1,6 +1,7 @@
 
 import javax.swing.*;
 
+
 public class studentFrontEnd extends JFrame {
 
     public studentFrontEnd() {
@@ -11,7 +12,7 @@ public class studentFrontEnd extends JFrame {
         app();
     }
 
-    // Default name for all initial renders is going to be "app" //
+    // Default name for all initial renders is going to be "app"
     private void app() {
         /*
          * This is where the homepage GUI (login page) for the student will go
