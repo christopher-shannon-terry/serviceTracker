@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import java.awt.*;
 
 public class studentLogin extends JFrame {
 
@@ -34,7 +35,7 @@ public class studentLogin extends JFrame {
     }
 
     public static void main(String[] args) {
-        studentLogin login = new studentLogin();
-        login.setVisible(true);
+        studentLogin studentApp = new studentLogin();
+        studentApp.setVisible(true);
     }    
 }
