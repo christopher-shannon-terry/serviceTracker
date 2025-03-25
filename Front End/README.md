@@ -9,4 +9,4 @@ This directory contains exclusively GUI elements and front-end related code. No 
 - References backend functionality through proper interfaces/methods
 
 ## Guidelines
-- Keep all logic in backend services
+- Keep all logic in backend please
