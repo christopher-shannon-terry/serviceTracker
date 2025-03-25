@@ -1,4 +1,5 @@
 
+
 /*
      * This file will implement a strong password check lest we can use sign in with google in a java app
      * When the student is creating their account, their password will be checked on when they click the create button

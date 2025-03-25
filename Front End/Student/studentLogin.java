@@ -1,10 +1,9 @@
 
 import javax.swing.*;
 
+public class studentLogin extends JFrame {
 
-public class studentFrontEnd extends JFrame {
-
-    public studentFrontEnd() {
+    public studentLogin() {
         setTitle("Service Submission");
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,7 +34,7 @@ public class studentFrontEnd extends JFrame {
     }
 
     public static void main(String[] args) {
-        studentFrontEnd student = new studentFrontEnd();
-        student.setVisible(true);
+        studentLogin login = new studentLogin();
+        login.setVisible(true);
     }    
 }
