@@ -1,4 +1,4 @@
-package com.piusxi.student.accounts;
+package com.piusxi.student.backend;
 
 public class strongPasswordCheck {
     

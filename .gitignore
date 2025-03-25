@@ -1,2 +1,5 @@
 # Ignore all .class files in all directories
 **/*.class
+
+# Ignore all .properties files in all directories
+**/*.properties
