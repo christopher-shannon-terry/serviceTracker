@@ -28,7 +28,7 @@ public class studentLogin extends JFrame {
     public studentLogin() {
         setTitle("Pius XI Service Hour Tracker");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         loginPage();
     }
@@ -131,27 +131,21 @@ public class studentLogin extends JFrame {
     }
     
     private void openCreateAccountForm() {
-        getContentPane().removeAll();
+        dispose();
 
         SwingUtilities.invokeLater(() -> {
             createAccountForm form = new createAccountForm();
             form.setVisible(true);
         });
-
-        revalidate();
-        repaint();
     }
     
     private void openStudentHomepage() {
-        getContentPane().removeAll();
+        dispose();
     
         SwingUtilities.invokeLater(() -> {
             studentHomepage homepage = new studentHomepage();
             homepage.setVisible(true);
         });
-
-        revalidate();
-        repaint();
     }
     
     public static void main(String[] args) { 
