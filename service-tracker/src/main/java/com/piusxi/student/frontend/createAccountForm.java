@@ -14,7 +14,13 @@ public class createAccountForm extends JFrame {
     }
 
     public void form() {
-
+        /*
+         * first_name -> String
+         * last_name -> String
+         * student id -> int
+         * email -> String
+         * password -> String? 
+         */
     }
 
     public static void main(String[] args) {
