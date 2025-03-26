@@ -1,5 +1,7 @@
 package com.piusxi.student.frontend;
 
+import com.piusxi.student.backend.login;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -96,7 +98,7 @@ public class studentLogin extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                login();
+                loginToStudentHomePage();
             }
         });
         
@@ -121,11 +123,14 @@ public class studentLogin extends JFrame {
         add(mainPanel);
     }
     
-    private void login() {
+    // Gonna move the logic to login.java in backend
+    private void loginToStudentHomePage() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
         // Authenticate against database here // 
+
+        login.authenticateLogin();
 
         openStudentHomepage();
     }

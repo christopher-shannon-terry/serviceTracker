@@ -166,13 +166,25 @@ public class createAccountForm extends JFrame {
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        if (!email.toLowerCase().endsWith("@piusxi.org")) {
+            JOptionPane.showMessageDialog(this, "Email must end with @piusxi.org",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
-        // TODO: Connect to backend classes for additional validation
-        // - Use strongPasswordCheck.java to validate password strength
-        // - Use verifyEmail.java to validate email format
+        /*
+        * TODO: Connect to backend classes for additional validation
+        * Use strongPasswordCheck.java to validate password strength
+        * Use verifyEmail.java to validate email format
+        *
+        */
         
-        // TODO: Send data to createAccount backend class
-        // Will need to queue the database to insert these values
+        /* 
+        * TODO: Send data to createAccount backend class
+        * Will need to queue the database to insert these values
+        *
+        */
     }
     
     private void returnToLogin() {

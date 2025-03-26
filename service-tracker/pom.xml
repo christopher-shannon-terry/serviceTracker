@@ -23,6 +23,28 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.1.4</version>
         </dependency>
+
+        <!-- Apaache commons validator for emails -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+        </dependency>
+
+        <!-- JavaMail API (for sending emails) -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <!-- JavaMail Implementation -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
