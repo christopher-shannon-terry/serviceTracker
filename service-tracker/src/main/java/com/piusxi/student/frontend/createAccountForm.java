@@ -20,6 +20,8 @@ public class createAccountForm extends JFrame {
          * student id -> int
          * email -> String
          * password -> String? 
+         * 
+         * Will need to queue the database to insert these values (will happen in the createAccount.java file which is in the student.backend directory)
          */
     }
 
