@@ -128,7 +128,7 @@ public class studentLogin extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        // Authenticate against database here // 
+        // Authenticate against database goes to login.java in backend (change file name, not good)
 
         login.authenticateLogin();
 
