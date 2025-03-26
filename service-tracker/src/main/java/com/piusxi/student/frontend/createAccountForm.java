@@ -1,5 +1,9 @@
 package com.piusxi.student.frontend;
 
-public class createAccountForm {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class createAccountForm extends JFrame {
     
 }
