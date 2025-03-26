@@ -21,6 +21,6 @@ Why must you do this
 
 THAT BRIDGE IS CALLING ME. BY THE END OF THIS PROJECT I WONT BE HERE 
 
-Also why do we branches in the repo, just install the LiveShare extension and we can all work together that way, its by microsoft
+Also why do we have branches in the repo, just install the LiveShare extension and we can all work together that way, its by microsoft
 
 :)
