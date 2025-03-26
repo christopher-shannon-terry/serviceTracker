@@ -174,7 +174,7 @@ public class createAccountForm extends JFrame {
         }
         
         /*
-        * TODO: Connect to backend classes for additional validation
+        * TODO: Connect to backend classes for additional validatio
         * Use strongPasswordCheck.java to validate password strength
         * Use verifyEmail.java to validate email format
         *
