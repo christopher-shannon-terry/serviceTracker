@@ -14,7 +14,7 @@
   - Email
   - Password
 - Need to handle edge cases like students with identical names (possibll, highly doubt this will happen because they will be able to sign in with student ID anyways, which is another unique identifier)
-- Include graduation year as a class identifier (maybe -> might just be overthinking --> See 'System Maintenance Requirements' below
+- Include graduation year as a class identifier (maybe -> might just be overthinking --> See 'System Maintenance Requirements' below)
 
 ## Admin Features
 - Admin homepage with menu bar and password change/reset option (to switch from generic 'changeme')
