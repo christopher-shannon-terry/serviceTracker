@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.piusxi.student.backend.strongPasswordCheck;
+
 public class createAccountForm extends JFrame {
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -173,14 +175,14 @@ public class createAccountForm extends JFrame {
             return;
         }
         
+        if (!strongPasswordCheck.isStrong(password)) {
+            String feedback = strongPasswordCheck.getPasswordFeedback(password);
+            JOptionPane.showMessageDialog(this, "Password is not strong enough\n" + feedback,
+            "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+            
         /*
-        * TODO: Connect to backend classes for additional validation
-        * Use strongPasswordCheck.java to validate password strength
-        * Use verifyEmail.java to validate email format
-        *
-        */
-        
-        /* 
         * TODO: Send data to createAccount backend class
         * Will need to queue the database to insert these values
         * 
