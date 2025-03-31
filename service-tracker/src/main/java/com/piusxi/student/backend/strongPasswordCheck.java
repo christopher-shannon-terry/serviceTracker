@@ -7,6 +7,7 @@ public class strongPasswordCheck {
     private static final int MIN_LOWERCASE = 1;
     private static final int MIN_DIGITS = 1;
     private static final int MIN_SPECIAL_CHARACTERS = 1;
+    int ok = 2;
 
     /**
      * Checks if a password is strong based on predefined criteria.
