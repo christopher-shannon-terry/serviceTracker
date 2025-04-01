@@ -11,9 +11,11 @@ public class studentHomepage extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    /*
-     * Display the student homepage 
-     */
+    public static void setStudentId() {
+        /*
+         * Implementation needed
+         */
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

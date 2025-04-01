@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.piusxi.student.backend.strongPasswordCheck;
+import com.piusxi.student.database.studentInformationDatabase;
 
 public class createAccountForm extends JFrame {
     private JTextField firstNameField;
@@ -126,10 +129,47 @@ public class createAccountForm extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /* if(!validateAccount) {
-                        return Error
-                    } */
-            validateAccount();
+                if (validateAccount()) {
+                    Connection connection = null;
+
+                    try {
+                        connection = studentInformationDatabase.connect();
+
+                        if (connection == null) {
+                            throw new SQLException("Failed to establish database connection");
+                        }
+
+                        String firstName = firstNameField.getText();
+                        String lastName = lastNameField.getText();
+                        String studentId = studentIdField.getText();
+                        String email = emailField.getText();
+                        String password = new String(passwordField.getPassword());
+
+                        studentInformationDatabase.insertStudentData(firstName, lastName, studentId, email, password, connection);
+
+                        JOptionPane.showMessageDialog(createAccountForm.this, 
+                            "Account created successfully!", 
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                        returnToLogin();
+                    }
+                    catch (SQLException se) {
+                        JOptionPane.showMessageDialog(createAccountForm.this, 
+                            "Database error: " + se.getMessage(), 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                        se.printStackTrace();
+                    }
+                    finally {
+                        if (connection != null) {
+                            try {
+                                connection.close();
+                            } 
+                            catch (SQLException se) {
+                                se.printStackTrace();
+                            }
+                        }
+                    }
+                }
             }
         });
         
@@ -156,10 +196,9 @@ public class createAccountForm extends JFrame {
 
 
     /**
-     * This method should return a boolean
-     * Because i want to be able to run like -> if (validateAccount) basically if true then i call studentInformationDatabase.insertX() and all is not too shabby
+     * This method should return trues if all validation passes, false otherwise
      */
-    private void validateAccount() {
+    private boolean validateAccount() {
         // Get form data
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -173,7 +212,7 @@ public class createAccountForm extends JFrame {
             email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required.", 
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         
         // Validate student ID is numeric
@@ -183,28 +222,30 @@ public class createAccountForm extends JFrame {
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Student ID must be a number.", 
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         
         // Validate passwords match
         if (!password.equals(confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Passwords do not match.", 
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
 
         if (!email.toLowerCase().endsWith("@piusxi.org")) {
             JOptionPane.showMessageDialog(this, "Email must end with @piusxi.org",
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         
         if (!strongPasswordCheck.isStrong(password)) {
             String feedback = strongPasswordCheck.getPasswordFeedback(password);
             JOptionPane.showMessageDialog(this, "Password is not strong enough\n" + feedback,
-            "Validation Error", JOptionPane.ERROR_MESSAGE);
-            return;
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         } 
+
+        return true;
     }
     
     private void returnToLogin() {
