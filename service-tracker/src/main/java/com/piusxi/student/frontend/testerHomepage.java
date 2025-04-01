@@ -1,4 +1,4 @@
-package com.piusxi;
+package com.piusxi.student.frontend;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

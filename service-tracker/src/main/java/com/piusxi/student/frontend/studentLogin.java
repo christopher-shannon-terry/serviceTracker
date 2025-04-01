@@ -175,6 +175,9 @@ public class studentLogin extends JFrame {
                             // pass studentId to service submitted database in order to display theyre specific service submissions and what not
                             // homepage.setStudentId(studentId); -> need to add setStudentId to studentHomepage
                             homepage.setVisible(true);
+
+                            /* testerHomepage tester = new testerHomepage();
+                            tester.setVisible(true); */
                         });
                     }
                     else {
