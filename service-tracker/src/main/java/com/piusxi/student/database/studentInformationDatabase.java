@@ -49,13 +49,13 @@ public class studentInformationDatabase {
      * @param firstName
      * @param lastName
      * @param studentId
-     * @param gradeYear
+     * @param gradYear
      * @param email
      * @param password
      * @param connection -> Connection initializer
      */
-    public static void insertStudentData(String firstName, String lastName, String studentId, String gradeYear, String email, String password, Connection connection) {
-        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password, grade_year) VALUES (?, ?, ?, ?, ?, ?)";
+    public static void insertStudentData(String firstName, String lastName, String studentId, String gradYear, String email, String password, Connection connection) {
+        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password, grad_year) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertStudentDataSQL)) {
             preparedStatement.setString(1, firstName);
@@ -63,7 +63,7 @@ public class studentInformationDatabase {
             preparedStatement.setString(3, studentId);
             preparedStatement.setString(4, email);
             preparedStatement.setString(5, password);
-            preparedStatement.setString(6, gradeYear);
+            preparedStatement.setString(6, gradYear);
             preparedStatement.executeUpdate();
 
             System.out.println("Student record inserted successfully");

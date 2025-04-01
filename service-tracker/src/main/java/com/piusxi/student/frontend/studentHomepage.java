@@ -1,6 +1,7 @@
 package com.piusxi.student.frontend;
 
 import java.awt.BorderLayout;
+import java.sql.Connection;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -10,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class studentHomepage extends JFrame {
+
+    private String studentId;
    
     public studentHomepage() {
         setTitle("Student Service Tracker");
@@ -20,20 +23,34 @@ public class studentHomepage extends JFrame {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        JPanel sidePanel = createSidePanel();
+        /* JPanel sidePanel = createSidePanel();
         mainPanel.add(sidePanel, BorderLayout.WEST);
 
         JPanel centerPanel = createCenterPanel();
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        mainPanel.add(centerPanel, BorderLayout.CENTER); */
 
         add(mainPanel);
 
     }
 
-    public static void setStudentId() {
-        /*
-         * Implementation needed
-         */
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+        // updateDashboard();
+    }
+
+    private void updateDashboard() {
+        if (studentId == null) return;
+
+        Connection connection = null;
+        try {
+            String studentInfoQuery = "SELECT grad_year";
+        } 
+        // catch (SQLException se) {
+            // System.out.println("Error: " + se.getMessage());
+        // }
+        finally {
+            System.out.println();
+        }
     }
 
     private void createMenuBar() {
@@ -51,17 +68,17 @@ public class studentHomepage extends JFrame {
         helpMenu.add(new JMenuItem("Questions"));
     }
 
-    private JPanel createSidePanel() {
+    /*private JPanel createSidePanel() {
 
 
-        return sidePanel;
+        // return sidePanel;
     }
 
     private JPanel createCenterPanel() {
 
 
-        return centerPanel;
-    }
+        // return centerPanel;
+    } */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
