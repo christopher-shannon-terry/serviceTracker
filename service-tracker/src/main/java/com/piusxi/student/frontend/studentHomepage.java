@@ -2,7 +2,6 @@ package com.piusxi.student.frontend;
 
 import java.awt.BorderLayout;
 import java.sql.Connection;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
