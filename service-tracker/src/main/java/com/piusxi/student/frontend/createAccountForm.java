@@ -1,9 +1,25 @@
 package com.piusxi.student.frontend;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.piusxi.student.backend.strongPasswordCheck;
 
@@ -110,7 +126,10 @@ public class createAccountForm extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createAccount();
+                /* if(!validateAccount) {
+                        return Error
+                    } */
+            validateAccount();
             }
         });
         
@@ -134,8 +153,13 @@ public class createAccountForm extends JFrame {
         mainPanel.add(centeringPanel, BorderLayout.CENTER);
         add(mainPanel);
     }
-    
-    private void createAccount() {
+
+
+    /**
+     * This method should return a boolean
+     * 
+     */
+    private void validateAccount() {
         // Get form data
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -180,13 +204,7 @@ public class createAccountForm extends JFrame {
             JOptionPane.showMessageDialog(this, "Password is not strong enough\n" + feedback,
             "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
-        }
-            
-        /*
-        * TODO: Send data to createAccount backend class
-        * Will need to queue the database to insert these values
-        * 
-        */ 
+        } 
     }
     
     private void returnToLogin() {
