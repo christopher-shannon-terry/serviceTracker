@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +31,8 @@ public class createAccountForm extends JFrame {
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField studentIdField;
+    private JComboBox<String> gradeYearField;
+    private JTextField graduationYearField;
     private JTextField emailField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
@@ -93,6 +96,21 @@ public class createAccountForm extends JFrame {
         studentIdField = new JTextField();
         studentIdPanel.add(studentIdField, BorderLayout.CENTER);
         formPanel.add(studentIdPanel);
+
+        // Grade Year
+        JPanel gradeYearPanel = new JPanel(new BorderLayout());
+        gradeYearPanel.add(new JLabel("Grade Year:"), BorderLayout.NORTH);
+        String[] gradeOptions = {"9 - Freshman", "10 - Sophomore", "11 - Junior", "12 - Senior"};
+        gradeYearField = new JComboBox<>(gradeOptions);
+        gradeYearPanel.add(gradeYearField, BorderLayout.CENTER);
+        formPanel.add(gradeYearPanel);
+
+        // Graduation Year
+        JPanel graduationYearPanel = new JPanel(new BorderLayout());
+        graduationYearPanel.add(new JLabel("Graduation Year:"), BorderLayout.NORTH);
+        graduationYearField = new JTextField();
+        graduationYearPanel.add(graduationYearField, BorderLayout.CENTER);
+        formPanel.add(graduationYearPanel);
         
         // Email
         JPanel emailPanel = new JPanel(new BorderLayout());
@@ -142,12 +160,12 @@ public class createAccountForm extends JFrame {
                         String firstName = firstNameField.getText();
                         String lastName = lastNameField.getText();
                         String studentId = studentIdField.getText();
-                        String gradeYear = studentId.substring(0, 2);
-                        System.out.println(gradeYear);
+                        String gradeYear = ((String)gradeYearField.getSelectedItem()).substring(0, 2).trim();
+                        String gradYear = graduationYearField.getText();
                         String email = emailField.getText();
                         String password = new String(passwordField.getPassword());
 
-                        studentInformationDatabase.insertStudentData(firstName, lastName, studentId, gradeYear, email, password, connection);
+                        studentInformationDatabase.insertStudentData(firstName, lastName, studentId, gradYear, gradeYear, email, password, connection);
 
                         JOptionPane.showMessageDialog(createAccountForm.this, 
                             "Account created successfully!", 
@@ -205,13 +223,15 @@ public class createAccountForm extends JFrame {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String studentId = studentIdField.getText();
+        String graduationYear = graduationYearField.getText();
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
         
         // Validate form fields
         if (firstName.isEmpty() || lastName.isEmpty() || studentId.isEmpty() || 
-            email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            graduationYear.isEmpty() || email.isEmpty() || password.isEmpty() || 
+            confirmPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required.", 
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -223,6 +243,21 @@ public class createAccountForm extends JFrame {
         } 
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Student ID must be a number.", 
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        try {
+            int year = Integer.parseInt(graduationYear);
+            int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+            if (year < currentYear || year > currentYear + 4) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid graduation year.", 
+                    "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Graduation year must be a valid number.", 
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }

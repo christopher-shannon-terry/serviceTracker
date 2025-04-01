@@ -49,13 +49,14 @@ public class studentInformationDatabase {
      * @param firstName
      * @param lastName
      * @param studentId
-     * @param gradYear
+     * @param gradYear -> graduation year of student
+     * @param gradeYear -> grade year of student (9 - Freshman, 10 - Sophomore, 11 - Junior, 12 - Senior)
      * @param email
      * @param password
      * @param connection -> Connection initializer
      */
-    public static void insertStudentData(String firstName, String lastName, String studentId, String gradYear, String email, String password, Connection connection) {
-        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password, grad_year) VALUES (?, ?, ?, ?, ?, ?)";
+    public static void insertStudentData(String firstName, String lastName, String studentId, String gradYear, String gradeYear, String email, String password, Connection connection) {
+        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password, grad_year, grade_year) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertStudentDataSQL)) {
             preparedStatement.setString(1, firstName);
@@ -64,6 +65,7 @@ public class studentInformationDatabase {
             preparedStatement.setString(4, email);
             preparedStatement.setString(5, password);
             preparedStatement.setString(6, gradYear);
+            preparedStatement.setString(7, gradeYear);
             preparedStatement.executeUpdate();
 
             System.out.println("Student record inserted successfully");
@@ -80,6 +82,8 @@ public class studentInformationDatabase {
      */
     public static void updatePassword(String password, Connection connection) {
         String updatePasswordSQL = "UPDATE Students SET password = ? WHERE student_id = ?";
+
+
     }
 
     /**
