@@ -157,7 +157,7 @@ public class createAccountForm extends JFrame {
 
     /**
      * This method should return a boolean
-     * 
+     * Because i want to be able to run like -> if (validateAccount) basically if true then i call studentInformationDatabase.insertX() and all is not too shabby
      */
     private void validateAccount() {
         // Get form data

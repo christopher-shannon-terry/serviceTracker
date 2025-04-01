@@ -4,16 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * This class is responsible for connecting to the student_info database and inserting values
- * 
+ * @implNote -> Will delete print statement verification later
  */
 public class studentInformationDatabase {
 
     public final Connection connection = null;
-    public final Statement statement = null;
 
     public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
     public static final String USER = "alanmitchell";
@@ -40,20 +38,20 @@ public class studentInformationDatabase {
         }
     }
 
+    
     /**
      * This methods inserts the first name into the database
      * @param firstName -> first name of student
-     * @param statement -> Statement initializer
      * @param connection -> Connection initializer
      */
-    public static void insertFirstName(String firstName, Statement statement, Connection connection) {
-        try {
-            statement = connection.createStatement();
+    public static void insertFirstName(String firstName, Connection connection) {
+        String insertFirstNameSQL = "INSERT INTO Students (first_name) VALUES (?)";
 
-            String insertFirstNameSQL = "INSERT INTO Students (first_name) VALUES (?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(insertFirstNameSQL);
-
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertFirstNameSQL)) {
             preparedStatement.setString(1, firstName);
+            preparedStatement.executeUpdate();
+
+            System.out.println("First name inserted successfully");
         }
         catch (SQLException se) {
             System.out.println("Error: " + se.getMessage());
@@ -64,45 +62,85 @@ public class studentInformationDatabase {
     /**
      * This method inserts the last name into the database
      * @param lastName -> last name of student
-     * @param statement -> Statement initializer
      * @param connection -> Connection initializer
      */
-    public static void insertLastName(String lastName, Statement statement, Connection connection) {
+    public static void insertLastName(String lastName, Connection connection) {
+        String insertLastNameSQL = "INSERT INTO Students (last_name) VALUES (?)";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertLastNameSQL)) {
+            preparedStatement.setString(1, lastName);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Last name inserted successfully");
+        } 
+        catch (SQLException se) {
+            System.out.println("Error: " + se.getMessage());
+        }
     }
 
     /**
      * This method inserts the student ID into the database
      * @param studentId -> unique student ID of student
-     * @param statement -> Statement initializer
      * @param connection -> Connection initializer
      */
-    public static void insertStudentID(String studentId, Statement statement, Connection connection) {
+    public static void insertStudentID(String studentId, Connection connection) {
+        String insertStudentIdSQL = "INSERT INTO Students (student_id) VALUES (?)";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertStudentIdSQL)) {
+            preparedStatement.setString(1, studentId);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Student ID inserted successfully");
+        }
+        catch (SQLException se) {
+            System.out.println("Error: " + se.getMessage());
+        }
     }
 
     /**
      * This method inserts the email into the database
      * @param email -> student email
-     * @param statement -> Statement initializer
      * @param connection -> Connection initializer
      */
-    public static void insertEmail(String email, Statement statement, Connection connection) {
+    public static void insertEmail(String email, Connection connection) {
+        String insertEmailSQL = "INSERT INTO Students (email) VALUES (?)";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertEmailSQL)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Email inserted successfully");
+        }
+        catch (SQLException se) {
+            System.out.println("Error: " + se.getMessage());
+        }
     }
 
     /**
      * This method inserts the password into the database
      * @param password -> password student chooses when creating account
-     * @param statement -> Statement initializer
      * @param connection -> Connection initializer
      */
-    public static void insertPassword(String password, Statement statement, Connection connection) {
+    public static void insertPassword(String password, Connection connection) {
+        String insertPasswordSQL = "INSERT INTO Students (password) VALUES (?)";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertPasswordSQL)) {
+            preparedStatement.setString(1, password);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Password inserted successfully");
+        }
+        catch (SQLException se) {
+            System.out.println("Error: " + se.getMessage());
+        }
     }
 
-
-    public static void main(String[] args) {
-        
+    /**
+     * This method updates the password when the student decides to change their password
+     * @param password -> password student chooses when creating account
+     * @param connection -> Connection initializer
+     */
+    public static void updatePassword(String password, Connection connection) {
+        String updatePasswordSQL = "UPDATE Student SET password = ? WHERE student_id = ?";
     }
 }
