@@ -142,10 +142,12 @@ public class createAccountForm extends JFrame {
                         String firstName = firstNameField.getText();
                         String lastName = lastNameField.getText();
                         String studentId = studentIdField.getText();
+                        String gradeYear = studentId.substring(0, 2);
+                        System.out.println(gradeYear);
                         String email = emailField.getText();
                         String password = new String(passwordField.getPassword());
 
-                        studentInformationDatabase.insertStudentData(firstName, lastName, studentId, email, password, connection);
+                        studentInformationDatabase.insertStudentData(firstName, lastName, studentId, gradeYear, email, password, connection);
 
                         JOptionPane.showMessageDialog(createAccountForm.this, 
                             "Account created successfully!", 

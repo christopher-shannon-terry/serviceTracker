@@ -49,12 +49,13 @@ public class studentInformationDatabase {
      * @param firstName
      * @param lastName
      * @param studentId
+     * @param gradeYear
      * @param email
      * @param password
      * @param connection -> Connection initializer
      */
-    public static void insertStudentData(String firstName, String lastName, String studentId, String email, String password, Connection connection) {
-        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password) VALUES (?, ?, ?, ?, ?)";
+    public static void insertStudentData(String firstName, String lastName, String studentId, String gradeYear, String email, String password, Connection connection) {
+        String insertStudentDataSQL = "INSERT INTO Students (first_name, last_name, student_id, email, password, grade_year) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertStudentDataSQL)) {
             preparedStatement.setString(1, firstName);
@@ -62,6 +63,7 @@ public class studentInformationDatabase {
             preparedStatement.setString(3, studentId);
             preparedStatement.setString(4, email);
             preparedStatement.setString(5, password);
+            preparedStatement.setString(6, gradeYear);
             preparedStatement.executeUpdate();
 
             System.out.println("Student record inserted successfully");
@@ -77,6 +79,16 @@ public class studentInformationDatabase {
      * @param connection -> Connection initializer
      */
     public static void updatePassword(String password, Connection connection) {
-        String updatePasswordSQL = "UPDATE Student SET password = ? WHERE student_id = ?";
+        String updatePasswordSQL = "UPDATE Students SET password = ? WHERE student_id = ?";
+    }
+
+    /**
+     * This method will update the students grade year (on August 1, 2025 maybe)
+     * will probably use local date or whatever
+     * @param gradeYear
+     * @param connection
+     */
+    public static void updateGradeYear(String gradeYear, Connection connection) {
+        String updateGradeYearSQL = "UPDATE Students SET grade_year = ? WHERE student_id = ?";
     }
 }

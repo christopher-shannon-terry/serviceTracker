@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import com.piusxi.student.database.studentInformationDatabase;
 
 /*
@@ -16,11 +13,9 @@ import com.piusxi.student.database.studentInformationDatabase;
 
 public class login {
 
-    public static void authenticateLogin(String username, String password) {
+    public static boolean loadAccount(String username, String password) {
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required", 
-                "Login Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
 
         Connection connection = null;
@@ -49,7 +44,7 @@ public class login {
                         String studentId = resultSet.getString("student_id");
                         String firstName = resultSet.getString("first_name");
 
-                        JOptionPane.showMessageDialog(this,
+                        /* JOptionPane.showMessageDialog(this,
                             "Login Successful! Welcome back, " + firstName + ".",
                             "Success", JOptionPane.INFORMATION_MESSAGE);
                         
@@ -57,24 +52,24 @@ public class login {
 
                         SwingUtilities.invokeLater(() -> {
                             studentHomepage homepage = new studentHomepage();
-                            // pass studentId to service submitted database in order to display theyre specific service submissions and what not
-                            // homepage.setStudentId(studentId); -> need to add setStudentId to studentHomepage
+                            pass studentId to service submitted database in order to display theyre specific service submissions and what not
+                            homepage.setStudentId(studentId); -> need to add setStudentId to studentHomepage
                             homepage.setVisible(true);
 
-                            /* testerHomepage tester = new testerHomepage();
-                            tester.setVisible(true); */
-                        });
+                            testerHomepage tester = new testerHomepage();
+                            tester.setVisible(true);
+                         }); */
                     }
                     else {
-                        JOptionPane.showMessageDialog(this, "Invalid username or password",
-                        "Login Error", JOptionPane.ERROR_MESSAGE);
+                        // JOptionPane.showMessageDialog(this, "Invalid username or password",
+                        // "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
         }
         catch (SQLException se) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + se.getMessage(),
-            "Error", JOptionPane.ERROR_MESSAGE);
+            /* JOptionPane.showMessageDialog(this, "Database Error: " + se.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE); */
         }
         finally {
             if (connection != null) {
@@ -86,6 +81,7 @@ public class login {
                 }
             }
         }
+        return true;
     }        
 }
 
