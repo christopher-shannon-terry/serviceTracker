@@ -3,6 +3,7 @@ package com.piusxi.student.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -80,10 +81,51 @@ public class studentInformationDatabase {
      * @param password -> password student chooses when creating account
      * @param connection -> Connection initializer
      */
-    public static void updatePassword(String password, Connection connection) {
+    public static boolean updatePassword(String studentId, String password, Connection connection) {
         String updatePasswordSQL = "UPDATE Students SET password = ? WHERE student_id = ?";
+        boolean success = false;
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updatePasswordSQL)) {
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, studentId);
+            
+            int rowsUpdated = preparedStatement.executeUpdate();
+            System.out.println(rowsUpdated + " rows updated");
 
+            success = (rowsUpdated > 0);
+        }
+        catch (SQLException se) {
+            System.out.println("Error updating password: " + se.getMessage());
+            se.printStackTrace();
+        }
+
+        return success;
+    }
+
+    
+    public static boolean isPasswordDifferent(String studentId, String newPassword, Connection connection) {
+        String currentPasswordQuery = "SELECT password FROM Students WHERE student_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(currentPasswordQuery)) {
+        preparedStatement.setString(1, studentId);
+        
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String currentPassword = resultSet.getString("password");
+                    
+                    // Return true if the new password is different from the current one
+                    return (!newPassword.equals(currentPassword));
+                }
+                // If no record is found with the given student ID
+                return true;
+            }
+        }
+        catch (SQLException se) {
+            System.out.println("Error checking current password: " + se.getMessage());
+            se.printStackTrace();
+            // In case of database error, default to allowing the password change
+            return true;
+        }
     }
 
     /**
