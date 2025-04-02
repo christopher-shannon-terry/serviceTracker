@@ -122,15 +122,13 @@ public class studentHomepage extends JFrame {
         // Add buttons to the side panel
         JButton dashboardBtn = new JButton("Dashboard");
         JButton submitServiceBtn = new JButton("Submit Service");
-        JButton viewServicesBtn = new JButton("View Services");
-        JButton reportsBtn = new JButton("Reports");
+        JButton viewCompletedBtn = new JButton("View Completed Service");
         JButton profileBtn = new JButton("My Profile");
         
         // Make buttons fill width
         dashboardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         submitServiceBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewServicesBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        reportsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewCompletedBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         profileBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add some space between components
@@ -139,9 +137,7 @@ public class studentHomepage extends JFrame {
         sidePanel.add(Box.createVerticalStrut(10));
         sidePanel.add(submitServiceBtn);
         sidePanel.add(Box.createVerticalStrut(10));
-        sidePanel.add(viewServicesBtn);
-        sidePanel.add(Box.createVerticalStrut(10));
-        sidePanel.add(reportsBtn);
+        sidePanel.add(viewCompletedBtn);
         sidePanel.add(Box.createVerticalStrut(10));
         sidePanel.add(profileBtn);
         
@@ -162,6 +158,7 @@ public class studentHomepage extends JFrame {
         JPanel dashboardPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         dashboardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
+        // These values will be updated based on database for account signed in
         dashboardPanel.add(createDashboardCard("Total Hours", "45.5"));
         dashboardPanel.add(createDashboardCard("Services Completed", "12"));
         dashboardPanel.add(createDashboardCard("Pending Approval", "3"));

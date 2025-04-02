@@ -1,22 +1,39 @@
 package com.piusxi.student.frontend;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 
 public class forgotPasswordForm extends JFrame {
     
+    private JPasswordField newPasswordField;
+    private JPasswordField confirmPasswordField;
+    private JButton changeButton;
+    private JButton cancelButton;
+
     public forgotPasswordForm() {
         setTitle("Student Service Tracker");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         createMenuBar();
+        createForm();
     }
 
     private void createMenuBar() {
@@ -64,7 +81,6 @@ public class forgotPasswordForm extends JFrame {
             }
         });
 
-        
         // Add menus to menu bar
         menuBar.add(fileMenu);
         menuBar.add(serviceMenu);
@@ -72,6 +88,68 @@ public class forgotPasswordForm extends JFrame {
         
         // Set the menu bar to the frame
         setJMenuBar(menuBar);
+    }
+
+    private void createForm() {
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.add(Box.createVerticalGlue());
+
+        // Password fields
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.setLayout(new BoxLayout(passwordPanel, BoxLayout.Y_AXIS));
+        passwordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        passwordPanel.setMaximumSize(new Dimension(300, 150));
+        
+        // New Password field
+        JLabel newPasswordLabel = new JLabel("New Password:");
+        newPasswordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        passwordPanel.add(newPasswordLabel);
+        
+        newPasswordField = new JPasswordField();
+        newPasswordField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        passwordPanel.add(newPasswordField);
+        passwordPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        // Confirm Password field
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+        confirmPasswordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        passwordPanel.add(confirmPasswordLabel);
+        
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        passwordPanel.add(confirmPasswordField);
+        
+        contentPanel.add(passwordPanel);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        changeButton = new JButton("Change");
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Database authen here
+            }
+        });
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                studentHomepage homepage = new studentHomepage();
+                homepage.setVisible(true);
+            }
+        });
+
+        add(mainPanel);
     }
 
     public static void main(String[] args) {
