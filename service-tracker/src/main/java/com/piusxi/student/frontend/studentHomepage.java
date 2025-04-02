@@ -21,12 +21,27 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.piusxi.student.backend.studentSession;
+
 public class studentHomepage extends JFrame {
+
+    private String studentId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String gradeYear;
+    private String gradYear;
 
     public studentHomepage() {
         setTitle("Student Service Tracker");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        if (studentSession.getInstance().isSessionActive()) {
+            setTitle("Student Service Tracker - " + studentSession.getInstance().getFullName());
+
+            // loadServiceStats();
+        }
         
         // Create menu bar
         createMenuBar();
@@ -45,6 +60,17 @@ public class studentHomepage extends JFrame {
         // Add the main panel to the frame
         add(mainPanel);
     }
+
+    private void loadServiceStats() {
+        String studentId = studentSession.getInstance().getStudentId();
+        
+        if (studentId == null || studentId.isEmpty()) {
+            return;
+        }
+
+        // to be implemented
+    }
+        
     
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -70,8 +96,8 @@ public class studentHomepage extends JFrame {
         serviceForm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                submitServiceForm serviceForm = new submitServiceForm();
-                // serviceForm.setVisible(true);
+                serviceReportingForm serviceForm = new serviceReportingForm();
+                serviceForm.setVisible(true);
             }
         });
         
@@ -120,26 +146,22 @@ public class studentHomepage extends JFrame {
         sidePanel.setBackground(new Color(230, 230, 250));
         
         // Add buttons to the side panel
-        JButton dashboardBtn = new JButton("Dashboard");
+        JButton profileBtn = new JButton("My Profile");
         JButton submitServiceBtn = new JButton("Submit Service");
         JButton viewCompletedBtn = new JButton("View Completed Service");
-        JButton profileBtn = new JButton("My Profile");
         
         // Make buttons fill width
-        dashboardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         submitServiceBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         viewCompletedBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        profileBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add some space between components
         sidePanel.add(Box.createVerticalStrut(20));
-        sidePanel.add(dashboardBtn);
+        sidePanel.add(profileBtn);
         sidePanel.add(Box.createVerticalStrut(10));
         sidePanel.add(submitServiceBtn);
         sidePanel.add(Box.createVerticalStrut(10));
         sidePanel.add(viewCompletedBtn);
-        sidePanel.add(Box.createVerticalStrut(10));
-        sidePanel.add(profileBtn);
         
         return sidePanel;
     }

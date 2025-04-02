@@ -8,10 +8,6 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,7 +20,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import com.piusxi.student.database.studentInformationDatabase;
+import com.piusxi.student.backend.login;
+import com.piusxi.student.backend.login.loginResult;
+import com.piusxi.student.backend.studentSession;
 
 public class studentLogin extends JFrame {
     private JTextField usernameField;
@@ -132,77 +130,37 @@ public class studentLogin extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required", 
+        loginResult result = login.authenticate(username, password);
+
+        if (result.isAuthenticated()) {
+            boolean sessionStarted = studentSession.getInstance().startSession(result.getStudentId());
+
+            if (!sessionStarted) {
+                JOptionPane.showMessageDialog(this,
+                    "Session error: Could not load student information.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this,
+                "Login Successful! Welcome back, " + result.getFirstName() + ".",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                studentHomepage homepage = new studentHomepage();
+                homepage.setVisible(true);
+            });
+        }
+        else {
+            JOptionPane.showMessageDialog(this, 
+                result.getErrorMessage(), 
                 "Login Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Connection connection = null;
-        try {
-            connection = studentInformationDatabase.connect();
-            if (connection == null) {
-                throw new SQLException("Failed to connect to database");
-            }
-
-            boolean isEmail = username.contains("@");
-            
-            String loginQuery;
-            if (isEmail) {
-                loginQuery = "SELECT * FROM Students WHERE email = ? AND password = ?";
-            }
-            else {
-                loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = ?";
-            }
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(loginQuery)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        String studentId = resultSet.getString("student_id");
-                        String firstName = resultSet.getString("first_name");
-
-                        JOptionPane.showMessageDialog(this,
-                            "Login Successful! Welcome back, " + firstName + ".",
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
-                        
-                        dispose();
-
-                        SwingUtilities.invokeLater(() -> {
-                            studentHomepage homepage = new studentHomepage();
-                            // pass studentId to service submitted database in order to display theyre specific service submissions and what not
-                            // homepage.setStudentId(studentId); -> need to add setStudentId to studentHomepage
-                            homepage.setVisible(true);
-
-                            /* testerHomepage tester = new testerHomepage();
-                            tester.setVisible(true); */
-                        });
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(this, "Invalid username or password",
-                        "Login Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        }
-        catch (SQLException se) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + se.getMessage(),
-            "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } 
-                catch (SQLException se) {
-                    se.printStackTrace();
-                }
-            }
         }
     }
-    
+
+        
     private void openCreateAccountForm() {
         dispose();
 
