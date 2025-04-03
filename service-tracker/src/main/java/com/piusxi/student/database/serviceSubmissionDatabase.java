@@ -51,61 +51,64 @@ public class serviceSubmissionDatabase {
      */
     public static Map<String, Object> getServiceStats(String studentId) {
         Map<String, Object> stats = new HashMap<>();
-
+    
         stats.put("totalHours", 0.0);
         stats.put("completedServices", 0);
         stats.put("pendingServices", 0);
-
+    
         Connection connection = null;
-
+    
         try {
             connection = connect();
             if (connection == null) {
                 throw new SQLException("Failed to establish database connection");
             }
-
-            String totalHoursQuery = "SELECT SUM(service_event_length) AS total_hours  " +
+    
+            // Get total approved hours
+            String totalHoursQuery = "SELECT SUM(service_event_length) AS total_hours " +
                                     "FROM service_submissions " +
                                     "WHERE student_id = ? AND status = 'approved'";
             
             try (PreparedStatement preparedStatement = connection.prepareStatement(totalHoursQuery)) {
                 preparedStatement.setString(1, studentId);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         double totalHours = resultSet.getDouble("total_hours");
-
+    
                         if (!resultSet.wasNull()) {
                             stats.put("totalHours", totalHours);
                         }
                     }
                 }
             }
-
-            String completedQuery = "SELECT COUNT(*) AS completed_count " +
+    
+            // Get count of completed (approved) services
+            String completedQuery = "SELECT COUNT(*) AS approved_count " +
                                     "FROM service_submissions " +
                                     "WHERE student_id = ? AND status = 'approved'";
-
+    
             try (PreparedStatement preparedStatement = connection.prepareStatement(completedQuery)) {
                 preparedStatement.setString(1, studentId);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        stats.put("completedServices", resultSet.getInt("completed_count"));
+                        stats.put("completedServices", resultSet.getInt("approved_count"));
                     }
                 }
             }
-
+    
+            // Get count of pending services
             String pendingQuery = "SELECT COUNT(*) AS pending_count " +
                                 "FROM service_submissions " +
                                 "WHERE student_id = ? AND status = 'pending'";
-
+    
             try (PreparedStatement preparedStatement = connection.prepareStatement(pendingQuery)) {
                 preparedStatement.setString(1, studentId);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        stats.put("completedServices", resultSet.getInt("completed_count"));
+                        stats.put("pendingServices", resultSet.getInt("pending_count"));
                     }
                 }
             }
@@ -124,7 +127,7 @@ public class serviceSubmissionDatabase {
                 }
             }
         }
-
+    
         return stats;
     }
 
@@ -139,24 +142,26 @@ public class serviceSubmissionDatabase {
      * @param submissionDate
      * @param connection
      */
-    public static void insertServiceData(String studentId, String serviceType, String serviceEventLength, String serviceDescription, String supervisorEmail, String status, String submissionDate, Connection connection) {
-        String insertServiceDataSQL = "INSERT INTO service_submissions (student_id, service_type, service_event_length, service_description, supervisor_email, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static void insertServiceData(String studentId, String serviceType, String serviceEventLength, 
+                                     String serviceDescription, String supervisorEmail, Connection connection) {
+    String insertServiceDataSQL = "INSERT INTO service_submissions (student_id, service_type, service_event_length, " +
+                                 "service_description, supervisor_email) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertServiceDataSQL)) {
-            preparedStatement.setString(1, studentId);
-            preparedStatement.setString(2, serviceType);
-            preparedStatement.setString(3, serviceEventLength);
-            preparedStatement.setString(4, serviceDescription);
-            preparedStatement.setString(5, supervisorEmail);
-            preparedStatement.setString(6, status);
-            preparedStatement.setString(7, submissionDate);
-
-            System.out.println("Service event data inserted successfully");
-        }
-        catch (SQLException se) {
-            System.out.println("Error: " + se.getMessage());
-        }
+    try (PreparedStatement preparedStatement = connection.prepareStatement(insertServiceDataSQL)) {
+        preparedStatement.setString(1, studentId);
+        preparedStatement.setString(2, serviceType);
+        preparedStatement.setString(3, serviceEventLength);
+        preparedStatement.setString(4, serviceDescription);
+        preparedStatement.setString(5, supervisorEmail);
+        
+        preparedStatement.executeUpdate();
+        System.out.println("Service event data inserted successfully");
     }
+    catch (SQLException se) {
+        System.out.println("Error: " + se.getMessage());
+        se.printStackTrace();
+    }
+}
 
     public static List<Map<String, String>> getStudentServiceSubmissions(String studentId, Connection connection) {
         List<Map<String, String>> submissions = new ArrayList<>();

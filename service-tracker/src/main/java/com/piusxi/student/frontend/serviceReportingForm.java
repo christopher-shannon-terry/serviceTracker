@@ -273,7 +273,7 @@ public class serviceReportingForm extends JFrame {
         if (!validateForm()) {
             return;
         }
-
+    
         String serviceType = getSelectedServiceType();
         if (serviceType == null) {
             JOptionPane.showMessageDialog(this,
@@ -281,38 +281,37 @@ public class serviceReportingForm extends JFrame {
                 "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         String studentId = studentSession.getInstance().getStudentId();
         String serviceDescription = descriptionArea.getText();
         String serviceEventLength = hoursServedField.getText();
         String supervisorEmail = supervisorEmailField.getText();
-
+    
         Connection connection = null;
         try {
             connection = serviceSubmissionDatabase.connect();
             if (connection == null) {
                 throw new SQLException("Failed to establish database connection");
             }
-
+    
             serviceSubmissionDatabase.insertServiceData(
                 studentId, 
                 serviceType, 
                 serviceEventLength, 
                 serviceDescription, 
                 supervisorEmail, 
-                studentId, 
-                supervisorEmail, 
-                connection);
-
-                JOptionPane.showMessageDialog(this,
-                    "Service event submitted successfully!",
-                    "Success", JOptionPane.INFORMATION_MESSAGE);
-                
-                dispose();
-                SwingUtilities.invokeLater(() -> {
-                    studentHomepage homepage = new studentHomepage();
-                    homepage.setVisible(true);
-                });
+                connection
+            );
+    
+            JOptionPane.showMessageDialog(this,
+                "Service event submitted successfully!",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+            dispose();
+            SwingUtilities.invokeLater(() -> {
+                studentHomepage homepage = new studentHomepage();
+                homepage.setVisible(true);
+            });
         } 
         catch (SQLException se) {
             JOptionPane.showMessageDialog(this,
