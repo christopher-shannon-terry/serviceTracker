@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
@@ -24,11 +26,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import com.piusxi.student.backend.studentSession;
+import com.piusxi.student.database.serviceSubmissionDatabase;
 
 public class serviceReportingForm extends JFrame {
     
@@ -235,19 +241,7 @@ public class serviceReportingForm extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Submit button clicked!");
-                // Just print values to console for testing
-                System.out.println("Hours: " + hoursServedField.getText());
-                System.out.println("Date: " + eventDateField.getText());
-                System.out.println("Location: " + locationField.getText());
-                
-                // Show confirmation dialog
-                javax.swing.JOptionPane.showMessageDialog(
-                    serviceReportingForm.this,
-                    "Form submitted successfully! (This is a mockup only)",
-                    "Success",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE
-                );
+                submitServiceData();
             }
         });
         
@@ -256,6 +250,9 @@ public class serviceReportingForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+
+                studentHomepage homepage = new studentHomepage();
+                homepage.setVisible(true);
             }
         });
         
@@ -270,6 +267,162 @@ public class serviceReportingForm extends JFrame {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         
         setContentPane(mainPanel);
+    }
+
+    private void submitServiceData() {
+        if (!validateForm()) {
+            return;
+        }
+
+        String serviceType = getSelectedServiceType();
+        if (serviceType == null) {
+            JOptionPane.showMessageDialog(this,
+                "Please select at least one service type.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String studentId = studentSession.getInstance().getStudentId();
+        String serviceDescription = descriptionArea.getText();
+        String serviceEventLength = hoursServedField.getText();
+        String supervisorEmail = supervisorEmailField.getText();
+
+        Connection connection = null;
+        try {
+            connection = serviceSubmissionDatabase.connect();
+            if (connection == null) {
+                throw new SQLException("Failed to establish database connection");
+            }
+
+            serviceSubmissionDatabase.insertServiceData(
+                studentId, 
+                serviceType, 
+                serviceEventLength, 
+                serviceDescription, 
+                supervisorEmail, 
+                studentId, 
+                supervisorEmail, 
+                connection);
+
+                JOptionPane.showMessageDialog(this,
+                    "Service event submitted successfully!",
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                dispose();
+                SwingUtilities.invokeLater(() -> {
+                    studentHomepage homepage = new studentHomepage();
+                    homepage.setVisible(true);
+                });
+        } 
+        catch (SQLException se) {
+            JOptionPane.showMessageDialog(this,
+                "Database error: " + se.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+            se.printStackTrace();
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } 
+                catch (SQLException se) {
+                    se.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private boolean validateForm() {
+        if (descriptionArea.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please provide a description of the service event.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String hoursServed = hoursServedField.getText().trim();
+        if (hoursServed.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter the number of hours served.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        try {
+            double hours = Double.parseDouble(hoursServed);
+            if (hours <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Hours served must be greater than zero.",
+                    "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                "Hours served must be a valid number.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String eventDate = eventDateField.getText().trim();
+        if (eventDate.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter the date of the service event.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String supervisorEmail = supervisorEmailField.getText().trim();
+        if (supervisorEmail.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter the supervisor's email address.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        if (!isValidEmail(supervisorEmail)) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a valid email address for the supervisor.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
+
+    private String getSelectedServiceType() {
+        StringBuilder serviceType = new StringBuilder();
+        
+        if (familyCheckBox.isSelected()) {
+            serviceType.append("Family");
+        }
+        
+        if (vulnerablePopCheckBox.isSelected()) {
+            if (serviceType.length() > 0) {
+                serviceType.append(", ");
+            }
+            serviceType.append("Vulnerable Populations");
+        }
+        
+        if (communityCheckBox.isSelected()) {
+            if (serviceType.length() > 0) {
+                serviceType.append(", ");
+            }
+            serviceType.append("Community");
+        }
+        
+        if (environmentalCheckBox.isSelected()) {
+            if (serviceType.length() > 0) {
+                serviceType.append(", ");
+            }
+            serviceType.append("Environmental");
+        }
+        
+        return serviceType.length() > 0 ? serviceType.toString() : null;
+    }
+
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
     }
 
     public static void main(String[] args) {
