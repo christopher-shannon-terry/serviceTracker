@@ -217,15 +217,6 @@ public class serviceReportingForm extends JFrame {
         gbc.gridx = 1;
         formPanel.add(eventDateField, gbc);
         
-        // Location of service
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        formPanel.add(new JLabel("Location of service:"), gbc);
-        
-        locationField = new JTextField(20);
-        gbc.gridx = 1;
-        formPanel.add(locationField, gbc);
-        
         // Supervisor Email
         gbc.gridx = 0;
         gbc.gridy = 4;
