@@ -8,13 +8,10 @@ Service Tracker is a comprehensive software application designed for Pius XI Cat
 - Service activity logging and submission
 - Administrative review and approval process
 - Service hour tracking and reporting
-- Email verification and notifications
+- Email confirmation to service beneficiary
 - Secure authentication system
 
 ## Project Structure
 - `admin/` - Administrative interface and functionality
 - `student/` - Student user interface and account management
 - `database/` - Database connection and data access layer
-
-## NOTE FOR SHANNON
-- Please code like a normal coder por favor :)
