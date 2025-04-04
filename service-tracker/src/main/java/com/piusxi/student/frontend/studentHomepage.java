@@ -104,7 +104,6 @@ public class studentHomepage extends JFrame {
         
         // File menu
         JMenu fileMenu = new JMenu("Home");
-        fileMenu.addSeparator();
         JMenuItem exit = new JMenuItem("Exit");
         fileMenu.add(exit);
         exit.addActionListener(new ActionListener() {

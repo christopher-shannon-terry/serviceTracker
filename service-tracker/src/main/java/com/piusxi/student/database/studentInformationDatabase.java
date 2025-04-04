@@ -18,6 +18,18 @@ public class studentInformationDatabase {
     public static final String USER = "alanmitchell";
     public static final String PASSWORD = "922925";
 
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    public static final String USER = "joshuachristian";
+    public static final String PASSWORD = "123456"; */
+
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    public static final String USER = "ethancobb";
+    public static final String PASSWORD = "123456"; */
+
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    public static final String USER = "shannonterry";
+    public static final String PASSWORD = "123456"; */
+
     /**
      * This method connects to the student_info database
      * @param connection -> Connection initializer
@@ -129,12 +141,21 @@ public class studentInformationDatabase {
     }
 
     /**
-     * This method will update the students grade year (on August 1, 2025 maybe)
+     * This method will update the students grade year (on August 1 of every year or something)
      * will probably use local date or whatever
      * @param gradeYear
      * @param connection
      */
     public static void updateGradeYear(String gradeYear, Connection connection) {
         String updateGradeYearSQL = "UPDATE Students SET grade_year = ? WHERE student_id = ?";
+    }
+
+    /**
+     * This will method will auto wipe seniors from the account database after every year
+     * Will have to be wiped before the updateGradeYear happens so that the juniors form the previous year dont have to recreate an account
+     * So probably will delete around June 1st
+     */
+    public static void wipeSeniors() {
+        
     }
 }
