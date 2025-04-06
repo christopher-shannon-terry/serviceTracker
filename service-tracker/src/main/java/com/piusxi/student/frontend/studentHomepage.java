@@ -135,10 +135,8 @@ public class studentHomepage extends JFrame {
         instructions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
                 instructionPage instructionPage = new instructionPage();
                 instructionPage.setVisible(true);
-                 */
             }
         });
 

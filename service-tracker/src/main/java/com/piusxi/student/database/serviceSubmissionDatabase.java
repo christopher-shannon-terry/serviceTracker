@@ -17,19 +17,19 @@ public class serviceSubmissionDatabase {
 
     public final Connection connection = null;
 
-    public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    public static final String DB_URL = "jdbc:mariadb://localhost:3306/service_info";
     public static final String USER = "alanmitchell";
     public static final String PASSWORD = "922925";
 
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/service_info";
     public static final String USER = "joshuachristian";
     public static final String PASSWORD = "123456"; */
 
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/service_info";
     public static final String USER = "ethancobb";
     public static final String PASSWORD = "123456"; */
 
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/student_info";
+    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/service_info";
     public static final String USER = "shannonterry";
     public static final String PASSWORD = "123456"; */
 
@@ -207,7 +207,7 @@ public class serviceSubmissionDatabase {
         return submissions;
     }
 
-    public static void wipeDatabase() {
+    public static void wipeSubmissions() {
         /* need date and time here
         will auto wipe submissions on august 1st every year or something */
     }
