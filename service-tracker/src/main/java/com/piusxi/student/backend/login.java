@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import com.piusxi.student.database.studentInformationDatabase;
 
-
 public class login {
 
     /**
@@ -27,18 +26,39 @@ public class login {
         }
 
         Connection connection = null;
+        Connection adminConnection = null;
         try {
             connection = studentInformationDatabase.connect();
+
             if (connection == null) { 
                 throw new SQLException("Failed to connect to database");
             }
 
             boolean isEmail = username.contains("@");
+            /**
+             * Need check for admin accounts
+             * Thinking boolean isStudent = username.contains(".") beecause only student emails have a period separating first and last name
+             * example: This is student account -> first.last@piusxi.org
+             *          This is admin account -> firstlast@piusxi.org 
+             * Admin accounts are like (first_initial+lastname@piusxi.org)
+             * so the loginQuery goes like:
+             *          if (isEmail && isStudent) {
+             *              loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?"
+             *          }
+             *          else if (isStudent) {
+             *              loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = BINARY ?"
+             *          } 
+             *          else {
+             *              loginQuery = "SELECT * FROM Administrators WHERE email = ? AND password = BINARY ?" 
+             *              // the last check means it has to be an admin account and from there we call the adminHomepage after successful login
+             *          }
+             * 
+             * */ 
 
             String loginQuery;
             if (isEmail) {
                 loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?";
-            }
+            } 
             else {
                 loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = BINARY ?";
             }
