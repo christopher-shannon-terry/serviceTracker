@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.piusxi.admin.backend.adminLogin;
+import com.piusxi.admin.backend.adminLogin.adminResult;
 import com.piusxi.student.database.studentInformationDatabase;
 
 public class login {
@@ -26,7 +28,6 @@ public class login {
         }
 
         Connection connection = null;
-        Connection adminConnection = null;
         try {
             connection = studentInformationDatabase.connect();
 
@@ -35,32 +36,18 @@ public class login {
             }
 
             boolean isEmail = username.contains("@");
-            /**
-             * Need check for admin accounts
-             * Thinking boolean isStudent = username.contains(".") beecause only student emails have a period separating first and last name
-             * example: This is student account -> first.last@piusxi.org
-             *          This is admin account -> firstlast@piusxi.org 
-             * Admin accounts are like (first_initial+lastname@piusxi.org)
-             * so the loginQuery goes like:
-             *          if (isEmail && isStudent) {
-             *              loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?"
-             *          }
-             *          else if (isStudent) {
-             *              loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = BINARY ?"
-             *          } 
-             *          else {
-             *              loginQuery = "SELECT * FROM Administrators WHERE email = ? AND password = BINARY ?" 
-             *              // the last check means it has to be an admin account and from there we call the adminHomepage after successful login
-             *          }
-             * 
-             * */ 
+            boolean isStudent = username.contains(".");
+            boolean isStudentID = username.matches("\\d+");
 
-            String loginQuery;
-            if (isEmail) {
+            String loginQuery = "";
+            if (isEmail && isStudent) {
                 loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?";
             } 
-            else {
+            else if (isStudent && isStudentID){
                 loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = BINARY ?";
+            }
+            else {
+                adminResult admin_result = adminLogin.authenticate(username, password);
             }
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(loginQuery)) {

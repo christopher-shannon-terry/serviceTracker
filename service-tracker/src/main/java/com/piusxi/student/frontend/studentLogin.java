@@ -20,9 +20,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.piusxi.admin.backend.adminLogin;
 import com.piusxi.student.backend.login;
 import com.piusxi.student.backend.login.loginResult;
 import com.piusxi.student.backend.studentSession;
+import com.piusxi.admin.backend.adminLogin.adminResult;
+import com.piusxi.admin.frontend.adminHomepage;
 
 public class studentLogin extends JFrame {
     private JTextField usernameField;
@@ -125,6 +128,26 @@ public class studentLogin extends JFrame {
         mainPanel.add(centeringPanel, BorderLayout.CENTER);
         add(mainPanel);
     }
+
+    private void loginToAdminHomePage() {
+        String email = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        adminResult admin_result = adminLogin.authenticate(email, password);
+
+        if (admin_result.isAuthenticated()) {
+            JOptionPane.showMessageDialog(this,
+                "Login Successful! Welcome back, Admin.",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                adminHomepage homepage = new adminHomepage();
+                homepage.setVisible(true);
+            });
+        }
+    }
     
     private void loginToStudentHomePage() {
         String username = usernameField.getText();
@@ -160,7 +183,6 @@ public class studentLogin extends JFrame {
         }
     }
 
-        
     private void openCreateAccountForm() {
         dispose();
 
