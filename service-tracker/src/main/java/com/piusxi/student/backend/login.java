@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.piusxi.admin.backend.adminLogin;
-import com.piusxi.admin.backend.adminLogin.adminResult;
 import com.piusxi.student.database.studentInformationDatabase;
 
 public class login {
@@ -21,43 +19,43 @@ public class login {
     public static loginResult authenticate(String username, String password) {
         loginResult result = new loginResult();
         result.setAuthenticated(false);
-
+    
         if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             result.setErrorMessage("Username and password are required");
             return result;
         }
-
+    
         Connection connection = null;
         try {
             connection = studentInformationDatabase.connect();
-
+    
             if (connection == null) { 
                 throw new SQLException("Failed to connect to database");
             }
-
+    
             boolean isEmail = username.contains("@");
-            boolean isStudent = username.contains(".");
             boolean isStudentID = username.matches("\\d+");
-
+    
             String loginQuery = "";
-            if (isEmail && isStudent) {
+            if (isEmail) {
                 loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?";
             } 
-            else if (isStudent && isStudentID){
+            else if (isStudentID) {
                 loginQuery = "SELECT * FROM Students WHERE student_id = ? AND password = BINARY ?";
             }
             else {
-                adminResult admin_result = adminLogin.authenticate(username, password);
+                result.setErrorMessage("Invalid username format");
+                return result;
             }
-
+    
             try (PreparedStatement preparedStatement = connection.prepareStatement(loginQuery)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         result.setAuthenticated(true);
-
+    
                         result.setStudentId(resultSet.getString("student_id"));
                         result.setFirstName(resultSet.getString("first_name"));
                         result.setLastName(resultSet.getString("last_name"));
@@ -85,7 +83,7 @@ public class login {
                 }
             }
         }
-
+    
         return result;
     }
 
@@ -101,6 +99,15 @@ public class login {
         private String email;
         private String gradeYear;
         private String gradYear;
+        private boolean isAdminAttempt = false;
+
+        public boolean isAdminAttempt() {
+            return isAdminAttempt;
+        }
+
+        public void setIsAdminAttempt(boolean isAdminAttempt) {
+            this.isAdminAttempt = isAdminAttempt;
+        }
 
         public boolean isAuthenticated() {
             return authenticated;

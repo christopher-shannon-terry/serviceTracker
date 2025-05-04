@@ -1,5 +1,4 @@
 com/piusxi/student/backend/forgotPassword.class
-com/piusxi/admin/backend/adminBackEnd.class
 com/piusxi/student/database/serviceSubmissionDatabase.class
 com/piusxi/student/backend/strongPasswordCheck.class
 com/piusxi/student/backend/login.class

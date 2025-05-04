@@ -12,31 +12,30 @@ public class adminLogin {
     public static adminResult authenticate(String email, String password) {
         adminResult result = new adminResult();
         result.setAuthenticated(false);
-
+    
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             result.setErrorMessage("Email and password are required");
             return result;
         }
-
+    
         Connection connection = null;
         try {
             connection = adminDatabase.connect();
-
+    
             if (connection == null) {
                 throw new SQLException("Failed to connect to database");
             }
-
+    
             String loginQuery = "SELECT * FROM Administrators WHERE email = ? AND PASSWORD = BINARY ?";
-
+    
             try (PreparedStatement preparedStatement = connection.prepareStatement(loginQuery)) {
                 preparedStatement.setString(1, email);
                 preparedStatement.setString(2, password);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         result.setAuthenticated(true);
-
-                        result.setEmail(resultSet.getString(email));
+                        result.setEmail(resultSet.getString("email"));
                     }
                     else {
                         result.setErrorMessage("Invalid email or password");
@@ -58,7 +57,7 @@ public class adminLogin {
                 }
             }
         }
-
+    
         return result;
     }
     

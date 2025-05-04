@@ -128,35 +128,15 @@ public class studentLogin extends JFrame {
         mainPanel.add(centeringPanel, BorderLayout.CENTER);
         add(mainPanel);
     }
-
-    private void loginToAdminHomePage() {
-        String email = usernameField.getText();
-        String password = new String(passwordField.getPassword());
-
-        adminResult admin_result = adminLogin.authenticate(email, password);
-
-        if (admin_result.isAuthenticated()) {
-            JOptionPane.showMessageDialog(this,
-                "Login Successful! Welcome back, Admin.",
-                "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                adminHomepage homepage = new adminHomepage();
-                homepage.setVisible(true);
-            });
-        }
-    }
     
     private void loginToStudentHomePage() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        loginResult result = login.authenticate(username, password);
+        loginResult student = login.authenticate(username, password);
 
-        if (result.isAuthenticated()) {
-            boolean sessionStarted = studentSession.getInstance().startSession(result.getStudentId());
+        if (student.isAuthenticated()) {
+            boolean sessionStarted = studentSession.getInstance().startSession(student.getStudentId());
 
             if (!sessionStarted) {
                 JOptionPane.showMessageDialog(this,
@@ -166,7 +146,7 @@ public class studentLogin extends JFrame {
             }
 
             JOptionPane.showMessageDialog(this,
-                "Login Successful! Welcome back, " + result.getFirstName() + ".",
+                "Login Successful! Welcome back, " + student.getFirstName() + ".",
                 "Success", JOptionPane.INFORMATION_MESSAGE);
 
             dispose();
@@ -175,12 +155,28 @@ public class studentLogin extends JFrame {
                 studentHomepage homepage = new studentHomepage();
                 homepage.setVisible(true);
             });
+            return;
         }
-        else {
-            JOptionPane.showMessageDialog(this, 
-                result.getErrorMessage(), 
-                "Login Error", JOptionPane.ERROR_MESSAGE);
+
+        adminResult administrator = adminLogin.authenticate(username, password);
+        
+        if (administrator.isAuthenticated()) {
+            JOptionPane.showMessageDialog(this,
+            "Admin Login Successful",
+            "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                adminHomepage homepage = new adminHomepage();
+                homepage.setVisible(true);
+            });
+            return;
         }
+
+        JOptionPane.showMessageDialog(this,
+        student.getErrorMessage(),
+        "Login Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void openCreateAccountForm() {
