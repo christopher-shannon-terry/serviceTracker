@@ -11,5 +11,7 @@
     - Im not rewriting everything to like web scrape skyward
     - Confirmation email will just not be done
     - Will talk to Tom about it
+    - In theory, can still leave the field and have tom personally email them
+    - Thats just very tedious tho
 
 - Move on to admin side
