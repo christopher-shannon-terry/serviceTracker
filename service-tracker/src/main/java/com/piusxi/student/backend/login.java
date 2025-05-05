@@ -36,7 +36,7 @@ public class login {
             boolean isEmail = username.contains("@");
             boolean isStudentID = username.matches("\\d+");
     
-            String loginQuery = "";
+            String loginQuery;
             if (isEmail) {
                 loginQuery = "SELECT * FROM Students WHERE email = ? AND password = BINARY ?";
             } 
