@@ -183,12 +183,12 @@ public class studentInformationDatabase {
 
             try (PreparedStatement ps = connection.prepareStatement(deleteSeniorsSQL)) {
                 int deleted = ps.executeUpdate();
-                
+
                 // System.out.printf("Deleted %d seniors from database\n", deleted);
             }
         }
         else {
-            // System.out.println("Today is not July 1st");
+            System.out.println("Today is not July 1st");
         }
     }
 }

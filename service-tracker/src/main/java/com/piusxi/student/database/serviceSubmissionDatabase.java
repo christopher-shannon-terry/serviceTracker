@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -207,8 +208,21 @@ public class serviceSubmissionDatabase {
         return submissions;
     }
 
-    public static void wipeSubmissions() {
-        /* need date and time here
-        will auto wipe submissions on august 1st every year or something */
+    // Wipe all student submissions sometime in June maybe
+    public static void wipeSubmissions(Connection connection) throws SQLException {
+        LocalDate date = LocalDate.now();
+
+        if (date.getMonthValue() == 6 && date.getDayOfMonth() == 30) {
+            String deleteSubmissionsSQL = "DELETE * FROM service_submissions";
+
+            try (PreparedStatement ps = connection.prepareStatement(deleteSubmissionsSQL)) {
+                int deleted = ps.executeUpdate(); // Delete all entries
+
+                // System.out.printf("Deleted %d submissions from database\n", deleted);
+            }
+        }
+        else {
+            System.out.println("Today is not June 30th");
+        }
     }
 }

@@ -8,6 +8,11 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,12 +31,42 @@ import com.piusxi.student.backend.login.loginResult;
 import com.piusxi.student.backend.studentSession;
 import com.piusxi.admin.backend.adminLogin.adminResult;
 import com.piusxi.admin.frontend.adminHomepage;
+import com.piusxi.student.database.serviceSubmissionDatabase;
+import com.piusxi.student.database.studentInformationDatabase;
 
 public class studentLogin extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton createAccountButton;
+
+    private static final ScheduledExecutorService dbUpdates; // Scheduled maintenance for database updates
+
+    // Static initializer block - runs once the class is loaded
+    static {
+        dbUpdates = Executors.newScheduledThreadPool(1);
+
+        /* Runs wipeSubmissions(), wipeSeniors() and updateGradeYear() daily at midnight
+         * See definition of wipeSubmissions(), wipeSeniors() and updateGradeYear() to see how they work
+         */
+        dbUpdates.scheduleAtFixedRate(() -> {
+            try {
+                Connection connection = studentInformationDatabase.connect();
+                Connection submissionsConnection = serviceSubmissionDatabase.connect();
+
+                if (connection != null && submissionsConnection != null) {
+                    serviceSubmissionDatabase.wipeSubmissions(connection); // Delete all submissions
+                    studentInformationDatabase.wipeSeniors(connection); // Remove all seniors
+                    studentInformationDatabase.updateGradeYear(null, connection); // Update all grade years (9 -> 10, 10 -> 11, 11 -> 12);
+                
+                    connection.close();
+                }
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }, 0L, 24L, TimeUnit.HOURS);
+    }
     
     public studentLogin() {
         setTitle("Pius XI Service Hour Tracker");
