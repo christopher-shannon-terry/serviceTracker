@@ -10,6 +10,7 @@ import com.piusxi.admin.database.adminDatabase;
 public class adminLogin {
 
     public static adminResult authenticate(String email, String password) {
+        
         adminResult result = new adminResult();
         result.setAuthenticated(false);
     
