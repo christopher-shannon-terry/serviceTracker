@@ -11,6 +11,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /*
+ * COMPLETELY IGNORE THIS FILE
+ * COMPLETELY IGNORE THIS FILE
+ * COMPLETELY IGNORE THIS FILE
+ * COMPLETELY IGNORE THIS FILE
+ */
+
+/*
 * When submit button clicked in serviceReportingForm page
 * Send email to whatever email entered in supervisor email field
 * supervisorEmailField.getText() -> probably?
