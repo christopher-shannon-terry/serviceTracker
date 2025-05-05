@@ -6,6 +6,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,6 +19,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import com.piusxi.admin.backend.generateReport;
 
 public class adminHomepage extends JFrame {
     
@@ -31,10 +36,7 @@ public class adminHomepage extends JFrame {
         JPanel sidePanel = createSidePanel();
         mainPanel.add(sidePanel, BorderLayout.WEST);
         
-
-
         add(mainPanel);
-
     }
 
     public void createMenuBar() {
@@ -47,7 +49,6 @@ public class adminHomepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                System.exit(0);
             }
         });
 
@@ -132,8 +133,27 @@ public class adminHomepage extends JFrame {
             }
         });
 
+        JMenu reports = new JMenu("Reports");
+        JMenuItem generateReports = new JMenuItem("Generate Report");
+        reports.add(generateReports);
+        generateReports.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String report = generateReport.generateFile(null);
+                }
+                catch (SQLException se) {
+                    se.printStackTrace();
+                }
+                catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        });
+
         navigationBar.add(home);
         navigationBar.add(studentsMenu);
+        navigationBar.add(reports);
 
         setJMenuBar(navigationBar);
     }
@@ -159,8 +179,7 @@ public class adminHomepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 /*
-                 * Just redirects to the same page
-                 * the all dropdown option in the students navBar does
+                 * Just redirects to the same page the all dropdown option in the students navBar does
                  */
             }
         });
