@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  * This class is responsible for connecting to the student_info database and inserting values
@@ -146,8 +147,27 @@ public class studentInformationDatabase {
      * @param gradeYear
      * @param connection
      */
-    public static void updateGradeYear(String gradeYear, Connection connection) {
-        String updateGradeYearSQL = "UPDATE Students SET grade_year = ? WHERE student_id = ?";
+    public static void updateGradeYear(String gradeYear, Connection connection) throws SQLException {
+        LocalDate date = LocalDate.now(); // Get current date
+
+        // If August 1st, increment all student grade level
+        if (date.getMonthValue() == 8 && date.getDayOfMonth() == 1) {
+            String updateGradeYearSQL = "UPDATE Students SET grade_year = " + 
+                                        "CASE " + 
+                                            "WHEN grade_year = '9' THEN '10'" +
+                                            "WHEN grade_year = '10' THEN '11'" +
+                                            "WHEN grade_year = '11' THEN '12'" +
+                                            "END";
+            
+            try (PreparedStatement ps = connection.prepareStatement(updateGradeYearSQL)) {
+                int updatedGrade = ps.executeUpdate();
+    
+                // System.out.printf("Updated grade year for %d students\n", updatedGrade);
+            }
+        }
+        else {
+            System.out.println("Today is not August 1st");
+        }
     }
 
     /**
@@ -155,7 +175,20 @@ public class studentInformationDatabase {
      * Will have to be wiped before the updateGradeYear happens so that the juniors form the previous year dont have to recreate an account
      * So probably will delete around June 1st
      */
-    public static void wipeSeniors() {
-        
+    public static void wipeSeniors(Connection connection) throws SQLException {
+        LocalDate date = LocalDate.now();
+
+        if (date.getMonthValue() == 7 && date.getDayOfMonth() == 1) {
+            String deleteSeniorsSQL = "DELETE FROM Students WHERE grade_year = '12'";
+
+            try (PreparedStatement ps = connection.prepareStatement(deleteSeniorsSQL)) {
+                int deleted = ps.executeUpdate();
+                
+                // System.out.printf("Deleted %d seniors from database\n", deleted);
+            }
+        }
+        else {
+            // System.out.println("Today is not July 1st");
+        }
     }
 }
