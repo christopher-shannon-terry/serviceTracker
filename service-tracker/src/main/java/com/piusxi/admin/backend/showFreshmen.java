@@ -1,11 +1,13 @@
 package com.piusxi.admin.backend;
 
-import com.piusxi.student.database.studentInformationDatabase;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import com.piusxi.student.database.serviceSubmissionDatabase;
+import com.piusxi.student.database.studentInformationDatabase;
 
 public class showFreshmen {
 
@@ -82,7 +84,7 @@ public class showFreshmen {
                 return new Object[0][0];
             }
 
-            String freshmenServiceQuery = "SELECT service_type, service_event_length, supervisor_email, submission_date FROM service_submissions"; // need to join the two databases
+            String freshmenServiceQuery = "SELECT service_type, service_event_length, supervisor_email, submission_date FROM service_submissions"; // need to join the two databases so that it retrieves the submissions of each unique student
             
         }
         catch (Exception e) {
