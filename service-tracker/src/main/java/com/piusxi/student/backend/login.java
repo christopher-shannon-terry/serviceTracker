@@ -17,6 +17,7 @@ public class login {
      * @return A LoginResult object containing authentication status and student info
      */
     public static loginResult authenticate(String username, String password) {
+
         loginResult result = new loginResult();
         result.setAuthenticated(false);
     
@@ -45,6 +46,7 @@ public class login {
             }
             else {
                 result.setErrorMessage("Invalid username format");
+                
                 return result;
             }
     
