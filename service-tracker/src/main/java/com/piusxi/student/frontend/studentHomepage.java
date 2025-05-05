@@ -207,7 +207,8 @@ public class studentHomepage extends JFrame {
         viewSubmissionsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // This would open a detailed view of all submissions
+                viewAllSubmissions allSubmissions = new viewAllSubmissions();
+                allSubmissions.setVisible(true);
             }
         });
 
