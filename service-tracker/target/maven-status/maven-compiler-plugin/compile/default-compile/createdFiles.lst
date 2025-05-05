@@ -1,6 +1,13 @@
 com/piusxi/student/backend/forgotPassword.class
+<<<<<<< HEAD
 com/piusxi/student/frontend/instructionPage$3.class
 com/piusxi/admin/frontend/adminHomepage$6.class
+=======
+com/piusxi/admin/frontend/viewSubmissions.class
+com/piusxi/student/frontend/instructionPage$3.class
+com/piusxi/admin/frontend/adminHomepage$6.class
+com/piusxi/admin/backend/showFreshmen.class
+>>>>>>> alan
 com/piusxi/student/frontend/studentHomepage$2.class
 com/piusxi/admin/frontend/adminHomepage$3.class
 com/piusxi/student/frontend/serviceReportingForm$2.class
@@ -11,13 +18,23 @@ com/piusxi/student/frontend/forgotPasswordForm$2.class
 com/piusxi/student/frontend/forgotPasswordForm$5.class
 com/piusxi/student/frontend/studentHomepage$5.class
 com/piusxi/admin/frontend/adminHomepage$7.class
+<<<<<<< HEAD
 com/piusxi/student/frontend/studentHomepage$6.class
 com/piusxi/student/frontend/serviceReportingForm.class
+=======
+com/piusxi/admin/frontend/allSeniors.class
+com/piusxi/student/frontend/serviceReportingForm.class
+com/piusxi/student/frontend/studentHomepage$6.class
+>>>>>>> alan
 com/piusxi/student/frontend/instructionPage.class
 com/piusxi/student/frontend/forgotPasswordForm$4.class
 com/piusxi/student/frontend/serviceReportingForm$6.class
 com/piusxi/student/frontend/serviceReportingForm$3.class
 com/piusxi/student/frontend/studentHomepage$3.class
+<<<<<<< HEAD
+=======
+com/piusxi/admin/frontend/viewSubmissionForm.class
+>>>>>>> alan
 com/piusxi/student/frontend/instructionPage$4.class
 com/piusxi/student/frontend/instructionPage$1.class
 com/piusxi/student/frontend/createAccountForm$1.class
@@ -26,19 +43,35 @@ com/piusxi/student/frontend/studentLogin.class
 com/piusxi/student/frontend/forgotPasswordForm$1.class
 com/piusxi/admin/frontend/adminHomepage$1.class
 com/piusxi/student/frontend/studentHomepage$7.class
+<<<<<<< HEAD
 com/piusxi/student/frontend/forgotPasswordForm.class
+=======
+com/piusxi/admin/frontend/allFreshmen.class
+com/piusxi/student/frontend/forgotPasswordForm.class
+com/piusxi/admin/frontend/allJuniors.class
+com/piusxi/admin/frontend/adminHomepage$8.class
+>>>>>>> alan
 com/piusxi/student/database/serviceSubmissionDatabase.class
 com/piusxi/student/frontend/studentHomepage$10.class
 com/piusxi/student/frontend/forgotPasswordForm$3.class
 com/piusxi/student/frontend/serviceReportingForm$4.class
 com/piusxi/student/frontend/studentLogin$1.class
+<<<<<<< HEAD
+=======
+com/piusxi/admin/backend/generateReport.class
+>>>>>>> alan
 com/piusxi/admin/frontend/adminHomepage$4.class
 com/piusxi/student/frontend/instructionPage$2.class
 com/piusxi/student/frontend/instructionPage$5.class
 com/piusxi/admin/database/adminDatabase.class
+<<<<<<< HEAD
 com/piusxi/student/backend/confirmationEmail.class
 com/piusxi/admin/backend/adminLogin$adminResult.class
 com/piusxi/student/backend/confirmationEmail$1.class
+=======
+com/piusxi/admin/frontend/allStudents.class
+com/piusxi/admin/backend/adminLogin$adminResult.class
+>>>>>>> alan
 com/piusxi/student/frontend/studentHomepage$1.class
 com/piusxi/admin/frontend/adminHomepage$2.class
 com/piusxi/student/frontend/serviceReportingForm$1.class
@@ -46,6 +79,10 @@ com/piusxi/student/backend/strongPasswordCheck.class
 com/piusxi/student/backend/login$loginResult.class
 com/piusxi/student/backend/studentSession.class
 com/piusxi/student/frontend/studentHomepage$8.class
+<<<<<<< HEAD
+=======
+com/piusxi/admin/frontend/allSophomores.class
+>>>>>>> alan
 com/piusxi/student/backend/login.class
 com/piusxi/student/database/studentInformationDatabase.class
 com/piusxi/student/frontend/serviceReportingForm$5.class
