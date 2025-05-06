@@ -179,7 +179,7 @@ public class showJuniors {
     
         System.out.println(Arrays.deepToString(data));
 
-        System.out.println("Fetching service information for freshmen...");
+        System.out.println("Fetching service information for juniors...");
         Object[][] serviceData = getJuniorService(connection);
         System.out.println("Service data fetched, printing results...");
         

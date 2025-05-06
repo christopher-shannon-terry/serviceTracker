@@ -38,7 +38,7 @@ public class showSeniors {
                 rowCount = countResults.getInt(1);
             }
 
-            String seniorInfoQuery = "SELECT student_id, first_name, last_name FROM Students WHERE grade_year = 9";
+            String seniorInfoQuery = "SELECT student_id, first_name, last_name FROM Students WHERE grade_year = 12";
             infoPS = studentConnection.prepareStatement(seniorInfoQuery);
             infoResults = infoPS.executeQuery();
 
@@ -179,7 +179,7 @@ public class showSeniors {
     
         System.out.println(Arrays.deepToString(data));
 
-        System.out.println("Fetching service information for freshmen...");
+        System.out.println("Fetching service information for seniors...");
         Object[][] serviceData = getSeniorService(connection);
         System.out.println("Service data fetched, printing results...");
         

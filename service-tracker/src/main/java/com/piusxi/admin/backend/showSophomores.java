@@ -12,12 +12,12 @@ import java.util.Map;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 import com.piusxi.student.database.studentInformationDatabase;
 
-public class showSophmores {
+public class showSophomores {
 
     public static Connection studentConnection = null;
     public static Connection serviceConnection = null;
 
-    public static Object[][] getSophmoreInfo(Connection connection) {
+    public static Object[][] getSophomoreInfo(Connection connection) {
         PreparedStatement countPS = null;
         PreparedStatement infoPS = null;
         ResultSet countResults = null;
@@ -29,8 +29,8 @@ public class showSophmores {
             if (studentConnection == null) {
                 return new Object[0][0];
             }
-            String sophmoreCountQuery = "SELECT COUNT(*) FROM Students WHERE grade_year = 10";
-            countPS = studentConnection.prepareStatement(sophmoreCountQuery);
+            String sophomoreCountQuery = "SELECT COUNT(*) FROM Students WHERE grade_year = 10";
+            countPS = studentConnection.prepareStatement(sophomoreCountQuery);
             countResults = countPS.executeQuery();
             int rowCount = 0;
 
@@ -38,8 +38,8 @@ public class showSophmores {
                 rowCount = countResults.getInt(1);
             }
 
-            String sophmoreInfoQuery = "SELECT student_id, first_name, last_name FROM Students WHERE grade_year = 10";
-            infoPS = studentConnection.prepareStatement(sophmoreInfoQuery);
+            String sophomoreInfoQuery = "SELECT student_id, first_name, last_name FROM Students WHERE grade_year = 10";
+            infoPS = studentConnection.prepareStatement(sophomoreInfoQuery);
             infoResults = infoPS.executeQuery();
 
             Object[][] data = new Object[rowCount][3];
@@ -79,29 +79,29 @@ public class showSophmores {
         }
     }
 
-    public static Object[][] getSophmoreService(Connection connection) {
+    public static Object[][] getSophomoreService(Connection connection) {
         PreparedStatement servicePS = null;
         ResultSet serviceResults = null;
         ArrayList<Object[]> serviceData = new ArrayList<>();
 
         try {
-            Object[][] sophmoreInfo = getSophmoreInfo(connection);
+            Object[][] sophomoreInfo = getSophomoreInfo(connection);
 
-            if (sophmoreInfo.length == 0) {
+            if (sophomoreInfo.length == 0) {
                 return new Object[0][0];
             }
 
             // Hash map for quick and easy look up
-            Map<Integer, String[]> sophmoreMap = new HashMap<>();
+            Map<Integer, String[]> sophomoreMap = new HashMap<>();
             StringBuilder idList = new StringBuilder();
             boolean first = true;
 
-            for (Object[] student : sophmoreInfo) {
+            for (Object[] student : sophomoreInfo) {
                 int studentID = (Integer) student[0];
                 String firstName = (String) student[1];
                 String lastName = (String) student[2];
 
-                sophmoreMap.put(studentID, new String[] {firstName, lastName});
+                sophomoreMap.put(studentID, new String[] {firstName, lastName});
 
                 if (!first) {
                     idList.append(",");
@@ -128,8 +128,8 @@ public class showSophmores {
             while (serviceResults.next()) {
                 int studentID = serviceResults.getInt("student_id");
 
-                if (sophmoreMap.containsKey(studentID)) {
-                    String[] studentInfo = sophmoreMap.get(studentID);
+                if (sophomoreMap.containsKey(studentID)) {
+                    String[] studentInfo = sophomoreMap.get(studentID);
 
                     Object[] row = new Object[7];
                     row[0] = studentID;
@@ -174,13 +174,13 @@ public class showSophmores {
         Connection connection = studentInformationDatabase.connect();
         System.out.println("Connection successful, fetching data...");
     
-        Object[][] data = getSophmoreInfo(connection);
+        Object[][] data = getSophomoreInfo(connection);
         System.out.println("Data fetched, printing results...");
     
         System.out.println(Arrays.deepToString(data));
 
-        System.out.println("Fetching service information for freshmen...");
-        Object[][] serviceData = getSophmoreService(connection);
+        System.out.println("Fetching service information for sophomores...");
+        Object[][] serviceData = getSophomoreService(connection);
         System.out.println("Service data fetched, printing results...");
         
         System.out.println(Arrays.deepToString(serviceData));

@@ -1,46 +1,26 @@
 package com.piusxi.admin.frontend;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import com.piusxi.admin.backend.showFreshmen;
+import com.piusxi.student.database.serviceSubmissionDatabase;
+import com.piusxi.student.database.studentInformationDatabase;
+import com.piusxi.student.frontend.serviceReportingForm;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-
-import com.piusxi.admin.backend.showSophomores;
-import com.piusxi.student.database.serviceSubmissionDatabase;
-import com.piusxi.student.database.studentInformationDatabase;
+import java.util.List;
 
 public class allSophomores extends JFrame {
     private JTextField searchField;
@@ -55,7 +35,7 @@ public class allSophomores extends JFrame {
     private JLabel titleLabel;
     private JLabel selectedStudentLabel;
     
-    public allSophomores() {
+    public allSophomore() {
         setTitle("Sophmore Students");
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -130,19 +110,18 @@ public class allSophomores extends JFrame {
         mainPanel.add(splitPane, BorderLayout.CENTER);
        
         add(mainPanel);
-        loadSophomoreData();
+        loadFreshmenData();
         addEventListeners();
     }
     
-    private void loadSophomoreData() {
+    private void loadFreshmenData() {
         Connection connection = studentInformationDatabase.connect();
-        
         if (connection != null) {
-            sophomoreData = showSophomores.getSophomoreInfo(connection);
-            serviceData = showSophomores.getSophomoreService(connection);
+            freshmenData = showFreshmen.getFreshmenInfo(connection);
+            serviceData = showFreshmen.getFreshmenService(connection);
             
             // Sort the data by last name, then first name
-            Arrays.sort(sophomoreData, new Comparator<Object[]>() {
+            Arrays.sort(freshmenData, new Comparator<Object[]>() {
                 @Override
                 public int compare(Object[] o1, Object[] o2) {
                     String lastName1 = (String) o1[2];
@@ -161,7 +140,7 @@ public class allSophomores extends JFrame {
             });
             
             // Populate the list model
-            for (Object[] student : sophomoreData) {
+            for (Object[] student : freshmenData) {
                 int id = (Integer) student[0];
                 String firstName = (String) student[1];
                 String lastName = (String) student[2];
@@ -230,7 +209,7 @@ public class allSophomores extends JFrame {
         String searchText = searchField.getText().toLowerCase();
         DefaultListModel<String> filteredModel = new DefaultListModel<>();
         
-        for (Object[] student : sophomoreData) {
+        for (Object[] student : freshmenData) {
             String firstName = ((String) student[1]).toLowerCase();
             String lastName = ((String) student[2]).toLowerCase();
             int id = (Integer) student[0];
@@ -257,7 +236,7 @@ public class allSophomores extends JFrame {
             // Find student info
             String firstName = "";
             String lastName = "";
-            for (Object[] student : sophomoreData) {
+            for (Object[] student : freshmenData) {
                 if ((Integer) student[0] == studentId) {
                     firstName = (String) student[1];
                     lastName = (String) student[2];
@@ -393,7 +372,7 @@ public class allSophomores extends JFrame {
             
             // Get student name from the student database
             String studentName = "Unknown";
-            for (Object[] student : sophomoreData) {
+            for (Object[] student : freshmenData) {
                 if ((Integer) student[0] == studentId) {
                     studentName = student[1] + " " + student[2];
                     break;
