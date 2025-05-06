@@ -56,7 +56,7 @@ public class allJuniors extends JFrame {
     private JLabel selectedStudentLabel;
     
     public allJuniors() {
-        setTitle("Sophmore Students");
+        setTitle("Junior Students");
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -66,7 +66,7 @@ public class allJuniors extends JFrame {
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         // Title at the top
-        titleLabel = new JLabel("Sophmore Students", JLabel.CENTER);
+        titleLabel = new JLabel("Junior Students", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
         
@@ -130,11 +130,11 @@ public class allJuniors extends JFrame {
         mainPanel.add(splitPane, BorderLayout.CENTER);
        
         add(mainPanel);
-        loadSophomoreData();
+        loadJuniorData();
         addEventListeners();
     }
     
-    private void loadSophomoreData() {
+    private void loadJuniorData() {
         Connection connection = studentInformationDatabase.connect();
         
         if (connection != null) {
