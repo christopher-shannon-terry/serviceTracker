@@ -292,7 +292,8 @@ public class allFreshmen extends JFrame {
                     statement.close();
                     serviceConnection.close();
                 }
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 e.printStackTrace();
                 tableModel.addRow(new Object[]{"Error retrieving service records", "", "", "", ""});
             }
@@ -305,7 +306,6 @@ public class allFreshmen extends JFrame {
             int submissionId = Integer.parseInt(tableModel.getValueAt(selectedRow, 4).toString());
             
             try {
-                // Connect to the service database
                 Connection serviceConnection = serviceSubmissionDatabase.connect();
                 if (serviceConnection != null) {
                     // Query to get all the details for this submission
@@ -317,7 +317,8 @@ public class allFreshmen extends JFrame {
                     if (resultSet.next()) {
                         // Create and show a read-only form pre-filled with the submission data
                         showSubmissionForm(resultSet);
-                    } else {
+                    } 
+                    else {
                         JOptionPane.showMessageDialog(this, 
                                 "Could not find submission details.", 
                                 "Record Not Found", 
@@ -328,7 +329,8 @@ public class allFreshmen extends JFrame {
                     statement.close();
                     serviceConnection.close();
                 }
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, 
                         "Error retrieving submission details: " + e.getMessage(), 
@@ -340,25 +342,21 @@ public class allFreshmen extends JFrame {
     
     private void showSubmissionForm(ResultSet resultSet) {
         try {
-            // Create a new JFrame for the submission details
             JFrame submissionFrame = new JFrame("Service Submission Details");
             submissionFrame.setSize(600, 700);
             submissionFrame.setLocationRelativeTo(this);
             submissionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             
-            // Main panel with padding
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
             
-            // Title
             JLabel titleLabel = new JLabel("Service Submission Details", JLabel.CENTER);
             titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
             titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             mainPanel.add(titleLabel);
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
             
-            // Create a form panel with labels and fields
             JPanel formPanel = new JPanel(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
@@ -383,7 +381,6 @@ public class allFreshmen extends JFrame {
             
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            // Add fields to the form
             addFormField(formPanel, gbc, "Student:", studentName, 0);
             addFormField(formPanel, gbc, "Student ID:", String.valueOf(studentId), 1);
             addFormField(formPanel, gbc, "Service Type:", serviceType, 2);
