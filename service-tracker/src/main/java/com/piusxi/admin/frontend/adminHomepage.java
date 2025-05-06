@@ -74,14 +74,8 @@ public class adminHomepage extends JFrame {
         freshmenStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /* 
-                 * Will go to a new page
-                 * Shows all freshmen with their name probably and ability to click on them
-                 * maybe sorted alphabetically or by grade
-                 * Will have a search bar to search for name of specific freshmen
-                 * Clicking on them will take them to page
-                 * Where it shows their submissions or something (will worry about that later) 
-                 */
+                allFreshmen freshmenService = new allFreshmen();
+                freshmenService.setVisible(true);
             }
         });
 
