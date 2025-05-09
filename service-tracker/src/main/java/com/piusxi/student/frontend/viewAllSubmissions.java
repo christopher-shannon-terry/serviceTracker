@@ -123,7 +123,12 @@ public class viewAllSubmissions extends JFrame {
         
         // Close button at the bottom
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> dispose());
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(closeButton);
