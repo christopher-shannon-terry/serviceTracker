@@ -14,8 +14,8 @@ com/piusxi/student/frontend/forgotPasswordForm$5.class
 com/piusxi/student/frontend/studentHomepage$5.class
 com/piusxi/admin/frontend/allSeniors.class
 com/piusxi/admin/frontend/adminHomepage$7.class
-com/piusxi/student/frontend/studentHomepage$6.class
 com/piusxi/student/frontend/serviceReportingForm.class
+com/piusxi/student/frontend/studentHomepage$6.class
 com/piusxi/student/frontend/instructionPage.class
 com/piusxi/student/frontend/forgotPasswordForm$4.class
 com/piusxi/student/frontend/serviceReportingForm$6.class
@@ -36,8 +36,8 @@ com/piusxi/admin/frontend/adminHomepage$8.class
 com/piusxi/student/database/serviceSubmissionDatabase.class
 com/piusxi/student/frontend/studentHomepage$10.class
 com/piusxi/student/frontend/forgotPasswordForm$3.class
-com/piusxi/student/frontend/studentLogin$1.class
 com/piusxi/student/frontend/serviceReportingForm$4.class
+com/piusxi/student/frontend/studentLogin$1.class
 com/piusxi/admin/backend/generateReport.class
 com/piusxi/admin/frontend/adminHomepage$4.class
 com/piusxi/student/frontend/instructionPage$2.class

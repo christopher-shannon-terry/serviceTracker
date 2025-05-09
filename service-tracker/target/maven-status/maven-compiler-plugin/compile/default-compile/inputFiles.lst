@@ -1,35 +1,17 @@
-<<<<<<< HEAD
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/generateReport.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/database/adminDatabase.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/database/studentInformationDatabase.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/instructionPage.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/studentHomepage.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allJuniors.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allStudents.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/confirmationEmail.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/adminHomepage.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allSeniors.java
-=======
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/showFreshmen.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allStudents.java
->>>>>>> alan
+/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/confirmationEmail.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/forgotPasswordForm.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/viewSubmissionForm.java
+/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/showJuniors.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/serviceReportingForm.java
+/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/showSophomores.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/strongPasswordCheck.java
-<<<<<<< HEAD
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/database/serviceSubmissionDatabase.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allFreshmen.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allSophomores.java
-=======
->>>>>>> alan
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/login.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/adminLogin.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/forgotPassword.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/studentLogin.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/viewSubmissions.java
-<<<<<<< HEAD
-=======
+/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/showSeniors.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/backend/generateReport.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/database/adminDatabase.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/database/studentInformationDatabase.java
@@ -37,11 +19,10 @@
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/studentHomepage.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/viewAllSubmissions.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allJuniors.java
-/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/adminHomepage.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allSeniors.java
+/home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/adminHomepage.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/database/serviceSubmissionDatabase.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allFreshmen.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/admin/frontend/allSophomores.java
->>>>>>> alan
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/backend/studentSession.java
 /home/alanmitchell/CS 250 Work/Service Tracker/service-tracker/src/main/java/com/piusxi/student/frontend/createAccountForm.java
