@@ -1,4 +1,0 @@
-# Ignore all .class files in all directories
-**/*.class
-
-# Ignore .gitignore
