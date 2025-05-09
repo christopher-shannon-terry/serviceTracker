@@ -84,14 +84,8 @@ public class adminHomepage extends JFrame {
         sophomoreStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /* 
-                 * Will go to a new page
-                 * Shows all sophomores with their name probably and ability to click on them
-                 * maybe sorted alphabetically or by grade
-                 * Will have a search bar to search for name of specific sophomore
-                 * Clicking on them will take them to page
-                 * Where it shows their submissions or something (will worry about that later) 
-                 */
+                allSophomores sophomoreService = new allSophomores();
+                sophomoreService.setVisible(true);
             }
         });
         
@@ -100,14 +94,8 @@ public class adminHomepage extends JFrame {
         juniorStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /* 
-                 * Will go to a new page
-                 * Shows all juniors with their name probably and ability to click on them
-                 * maybe sorted alphabetically or by grade
-                 * Will have a search bar to search for name of specific juniors
-                 * Clicking on them will take them to page
-                 * Where it shows their submissions or something (will worry about that later) 
-                 */
+                allJuniors juniorService = new allJuniors();
+                juniorService.setVisible(true);
             }
         });
 
@@ -116,14 +104,8 @@ public class adminHomepage extends JFrame {
         seniorStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /* 
-                 * Will go to a new page
-                 * Shows all seniors with their name probably and ability to click on them
-                 * maybe sorted alphabetically or by grade
-                 * Will have a search bar to search for name of specific seniors
-                 * Clicking on them will take them to page
-                 * Where it shows their submissions or something (will worry about that later) 
-                 */
+                allSeniors seniorService = new allSeniors();
+                seniorService.setVisible(true);
             }
         });
 

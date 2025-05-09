@@ -418,6 +418,6 @@ public class studentHomepage extends JFrame {
         SwingUtilities.invokeLater(() -> {
             studentHomepage homepage = new studentHomepage();
             homepage.setVisible(true);
-        });
+        }); 
     }
 }

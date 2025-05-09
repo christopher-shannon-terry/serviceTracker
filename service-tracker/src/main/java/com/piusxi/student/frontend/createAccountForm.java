@@ -132,7 +132,11 @@ public class createAccountForm extends JFrame {
         confirmPasswordField = new JPasswordField();
         confirmPasswordPanel.add(confirmPasswordField, BorderLayout.CENTER);
         formPanel.add(confirmPasswordPanel);
-        
+
+        JPanel passwordRequirements = new JPanel(new BorderLayout());
+        passwordRequirements.add(new JLabel("Password must be at least 8 characters long, have one number, and have one special character."), BorderLayout.CENTER);
+        formPanel.add(passwordRequirements);
+
         contentPanel.add(formPanel);
         
         // Add spacing after the form
