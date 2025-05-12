@@ -304,8 +304,14 @@ public class viewAllSubmissions extends JFrame {
             // Close button
             JButton closeButton = new JButton("Close");
             closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            closeButton.addActionListener(e -> submissionFrame.dispose());
-            
+            closeButton.addActionListener((ActionEvent e) -> {
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new studentHomepage().setVisible(true);
+                });
+            });
+
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
             mainPanel.add(closeButton);
             

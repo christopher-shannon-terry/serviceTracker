@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -70,8 +69,7 @@ public class studentHomepage extends JFrame {
             dispose();
             
             SwingUtilities.invokeLater(() -> {
-                studentLogin login = new studentLogin();
-                login.setVisible(true);
+                new studentLogin().setVisible(true);
             });
 
             return;
@@ -106,12 +104,10 @@ public class studentHomepage extends JFrame {
         JMenu fileMenu = new JMenu("Home");
         JMenuItem exit = new JMenuItem("Exit");
         fileMenu.add(exit);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                System.exit(0);
-            }
+        exit.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            System.exit(0);
         });
         
         // Service menu
@@ -119,12 +115,23 @@ public class studentHomepage extends JFrame {
         JMenuItem serviceForm = new JMenuItem("Submit Service");
         serviceMenu.add(serviceForm);
 
-        serviceForm.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                serviceReportingForm serviceForm = new serviceReportingForm();
-                serviceForm.setVisible(true);
-            }
+        serviceForm.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new serviceReportingForm().setVisible(true);
+            });
+        });
+
+        JMenuItem submissions = new JMenuItem("Submissions");
+        serviceMenu.add(submissions);
+
+        submissions.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                dispose();
+
+                new viewAllSubmissions().setVisible(true);
+            });
         });
         
         // Help menu
@@ -132,25 +139,23 @@ public class studentHomepage extends JFrame {
         JMenuItem instructions = new JMenuItem("Instructions");
         helpMenu.add(instructions);
         
-        instructions.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                instructionPage instructionPage = new instructionPage();
-                instructionPage.setVisible(true);
-            }
+        instructions.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new instructionPage().setVisible(true);
+            });
         });
 
         JMenuItem resetPassword = new JMenuItem("Reset Password");
         helpMenu.add(resetPassword);
 
-        resetPassword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-
-                forgotPasswordForm form = new forgotPasswordForm();
-                form.setVisible(true);
-            }
+        resetPassword.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new forgotPasswordForm().setVisible(true);
+            });
         });
         
         // Add menus to menu bar
@@ -194,45 +199,40 @@ public class studentHomepage extends JFrame {
 
         // Add buttons to the side panel
         JButton submitServiceBtn = new JButton("Submit Service");
-        submitServiceBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                serviceReportingForm form = new serviceReportingForm();
-                form.setVisible(true);
-            }
+        submitServiceBtn.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new serviceReportingForm().setVisible(true);
+            });
         });
 
         JButton viewSubmissionsBtn = new JButton("View All Submissions");
-        viewSubmissionsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // This would open a detailed view of all submissions
-                viewAllSubmissions allSubmissions = new viewAllSubmissions();
-                allSubmissions.setVisible(true);
+        viewSubmissionsBtn.addActionListener((ActionEvent e) -> {
+            dispose();
 
-            }
+            SwingUtilities.invokeLater(() -> {
+                new viewAllSubmissions().setVisible(true);
+            });
         });
 
         JButton resetPasswordBtn = new JButton("Change Password");
-        resetPasswordBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                forgotPasswordForm form = new forgotPasswordForm();
-                form.setVisible(true);
-            }
+        resetPasswordBtn.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new forgotPasswordForm().setVisible(true);
+            });
         });
 
         JButton logoutBtn = new JButton("Logout");
-        logoutBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                studentSession.getInstance().endSession();
-                dispose();
-                studentLogin login = new studentLogin();
-                login.setVisible(true);
-            }
+        logoutBtn.addActionListener((ActionEvent e) -> {
+            studentSession.getInstance().endSession();
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new studentLogin().setVisible(true);
+            });
         });
 
         // Make buttons fill width
@@ -319,11 +319,8 @@ public class studentHomepage extends JFrame {
         
         // Add refresh button at the bottom
         JButton refreshButton = new JButton("Refresh Data");
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshData();
-            }
+        refreshButton.addActionListener((ActionEvent e) -> {
+            refreshData();
         });
         
         JPanel refreshPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -412,12 +409,5 @@ public class studentHomepage extends JFrame {
         JOptionPane.showMessageDialog(this,
             "Data refreshed successfully!",
             "Refresh", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            studentHomepage homepage = new studentHomepage();
-            homepage.setVisible(true);
-        }); 
     }
 }

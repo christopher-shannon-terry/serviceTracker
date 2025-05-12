@@ -90,6 +90,14 @@ public class serviceReportingForm extends JFrame {
         
         // Service menu
         JMenu serviceMenu = new JMenu("Service");
+        JMenuItem submissions = new JMenuItem("Submissions");
+        serviceMenu.add(submissions);
+
+        submissions.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                new viewAllSubmissions().setVisible(true);
+            });
+        });
         
         // Help menu
         JMenu helpMenu = new JMenu("Help");
@@ -99,10 +107,11 @@ public class serviceReportingForm extends JFrame {
         instructions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
-                instructionPage instructionPage = new instructionPage();
-                instructionPage.setVisible(true);
-                 */
+                dispose(); 
+
+                SwingUtilities.invokeLater(() -> {
+                    new instructionPage().setVisible(true);
+                });
             }
         });
 
