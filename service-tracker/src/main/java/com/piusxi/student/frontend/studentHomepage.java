@@ -124,12 +124,10 @@ public class studentHomepage extends JFrame {
         exit.setForeground(PIUS_NAVY);
         exit.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(exit);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                System.exit(0);
-            }
+        exit.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            System.exit(0);
         });
         
         // Service menu

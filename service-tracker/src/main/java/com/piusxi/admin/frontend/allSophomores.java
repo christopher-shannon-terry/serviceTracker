@@ -1,6 +1,7 @@
 package com.piusxi.admin.frontend;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -43,7 +45,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import com.piusxi.admin.backend.generateReport;
 import com.piusxi.admin.backend.serviceStatus;
@@ -52,6 +56,12 @@ import com.piusxi.student.database.serviceSubmissionDatabase;
 import com.piusxi.student.database.studentInformationDatabase;
 
 public class allSophomores extends JFrame {
+    // Pius XI school colors - added for consistency with student side
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
+    
     private JTextField searchField;
     private JList<String> studentList;
     private DefaultListModel<String> listModel;
@@ -65,28 +75,45 @@ public class allSophomores extends JFrame {
     private JLabel selectedStudentLabel;
     
     public allSophomores() {
-        setTitle("Sophmore Students");
+        setTitle("Sophomore Students");
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(PIUS_WHITE);
         
         // Main panel with border layout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Title at the top
-        titleLabel = new JLabel("Sophmore Students", JLabel.CENTER);
+        titleLabel = new JLabel("Sophomore Students", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PIUS_NAVY);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
         
         // Left panel - search and student list
         JPanel leftPanel = new JPanel(new BorderLayout(5, 10));
         leftPanel.setPreferredSize(new Dimension(300, 600));
+        leftPanel.setBackground(PIUS_WHITE);
+        leftPanel.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
         
         // Search panel
         JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBackground(PIUS_WHITE);
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
         JLabel searchLabel = new JLabel("Search Students:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchLabel.setForeground(PIUS_NAVY);
+        
         searchField = new JTextField(20);
+        searchField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
+        
         searchPanel.add(searchLabel, BorderLayout.NORTH);
         searchPanel.add(searchField, BorderLayout.CENTER);
         leftPanel.add(searchPanel, BorderLayout.NORTH);
@@ -96,18 +123,25 @@ public class allSophomores extends JFrame {
         studentList = new JList<>(listModel);
         studentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         studentList.setFont(new Font("Arial", Font.PLAIN, 14));
+        studentList.setBackground(PIUS_WHITE);
+        studentList.setSelectionBackground(PIUS_GOLD);
+        studentList.setSelectionForeground(PIUS_NAVY);
         
         JScrollPane listScrollPane = new JScrollPane(studentList);
+        listScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
         leftPanel.add(listScrollPane, BorderLayout.CENTER);
         
         // Right panel - service information
         JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+        rightPanel.setBackground(PIUS_WHITE);
         
         selectedStudentLabel = new JLabel("Select a student to view their service records", JLabel.CENTER);
         selectedStudentLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        selectedStudentLabel.setForeground(PIUS_NAVY);
         rightPanel.add(selectedStudentLabel, BorderLayout.NORTH);
         
         servicePanel = new JPanel(new BorderLayout());
+        servicePanel.setBackground(PIUS_WHITE);
         
         // Create table model and table for service submissions
         String[] columnNames = {"Type", "Hours", "Supervisor Email", "Submission Date", "Submission ID"};
@@ -122,7 +156,30 @@ public class allSophomores extends JFrame {
         serviceTable.setFillsViewportHeight(true);
         serviceTable.setRowHeight(25);
         serviceTable.setFont(new Font("Arial", Font.PLAIN, 14));
-        serviceTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Style the table header
+        JTableHeader header = serviceTable.getTableHeader();
+        header.setBackground(PIUS_NAVY);
+        header.setForeground(PIUS_WHITE);
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Style the table rows with alternating colors
+        serviceTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                if (isSelected) {
+                    c.setBackground(PIUS_GOLD);
+                    c.setForeground(PIUS_NAVY);
+                } else {
+                    c.setBackground(row % 2 == 0 ? PIUS_WHITE : LIGHT_GRAY_BG);
+                    c.setForeground(PIUS_NAVY);
+                }
+                
+                return c;
+            }
+        });
         
         // Hide the Submission ID column as it's only used for retrieving the specific record
         serviceTable.getColumnModel().getColumn(4).setMinWidth(0);
@@ -130,12 +187,14 @@ public class allSophomores extends JFrame {
         serviceTable.getColumnModel().getColumn(4).setWidth(0);
         
         serviceScrollPane = new JScrollPane(serviceTable);
+        serviceScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
         servicePanel.add(serviceScrollPane, BorderLayout.CENTER);
         rightPanel.add(servicePanel, BorderLayout.CENTER);
         
         // Add left and right panels to the main panel
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         splitPane.setDividerLocation(300);
+        splitPane.setBorder(null);
         mainPanel.add(splitPane, BorderLayout.CENTER);
        
         add(mainPanel);
@@ -146,9 +205,17 @@ public class allSophomores extends JFrame {
 
     public void createMenuBar() {
         JMenuBar navigationBar = new JMenuBar();
+        navigationBar.setBackground(PIUS_NAVY);
+        navigationBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         JMenu home = new JMenu("Home");
+        home.setForeground(PIUS_WHITE);
+        home.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem dashboard = new JMenuItem("Dashboard");
+        dashboard.setBackground(PIUS_WHITE);
+        dashboard.setForeground(PIUS_NAVY);
+        dashboard.setFont(new Font("Arial", Font.PLAIN, 14));
         home.add(dashboard);
         dashboard.addActionListener((ActionEvent e) -> {
             dispose();
@@ -159,6 +226,9 @@ public class allSophomores extends JFrame {
         });
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         home.add(exit);
         exit.addActionListener((ActionEvent e) -> {
             dispose();
@@ -167,7 +237,13 @@ public class allSophomores extends JFrame {
         });
 
         JMenu studentsMenu = new JMenu("Students");
+        studentsMenu.setForeground(PIUS_WHITE);
+        studentsMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem allStudents = new JMenuItem("All");
+        allStudents.setBackground(PIUS_WHITE);
+        allStudents.setForeground(PIUS_NAVY);
+        allStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(allStudents);
         allStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -178,6 +254,9 @@ public class allSophomores extends JFrame {
         });
 
         JMenuItem freshmenStudents = new JMenuItem("Freshmen");
+        freshmenStudents.setBackground(PIUS_WHITE);
+        freshmenStudents.setForeground(PIUS_NAVY);
+        freshmenStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(freshmenStudents);
         freshmenStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -188,6 +267,9 @@ public class allSophomores extends JFrame {
         });
         
         JMenuItem juniorStudents = new JMenuItem("Juniors");
+        juniorStudents.setBackground(PIUS_WHITE);
+        juniorStudents.setForeground(PIUS_NAVY);
+        juniorStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(juniorStudents);
         juniorStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -198,6 +280,9 @@ public class allSophomores extends JFrame {
         });
 
         JMenuItem seniorStudents = new JMenuItem("Seniors");
+        seniorStudents.setBackground(PIUS_WHITE);
+        seniorStudents.setForeground(PIUS_NAVY);
+        seniorStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(seniorStudents);
         seniorStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -208,17 +293,32 @@ public class allSophomores extends JFrame {
         });
 
         JMenu reports = new JMenu("Reports");
+        reports.setForeground(PIUS_WHITE);
+        reports.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem generateReports = new JMenuItem("Generate Report");
+        generateReports.setBackground(PIUS_WHITE);
+        generateReports.setForeground(PIUS_NAVY);
+        generateReports.setFont(new Font("Arial", Font.PLAIN, 14));
         reports.add(generateReports);
         generateReports.addActionListener((ActionEvent e) -> {
             try {
                 String report = generateReport.generateFile(null);
+                JOptionPane.showMessageDialog(this, 
+                    "Report generated successfully!", 
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (SQLException se) {
                 se.printStackTrace();
+                JOptionPane.showMessageDialog(this, 
+                    "Database error: " + se.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
             }
             catch (IOException ie) {
                 ie.printStackTrace();
+                JOptionPane.showMessageDialog(this, 
+                    "File error: " + ie.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -462,18 +562,22 @@ public class allSophomores extends JFrame {
             submissionFrame.setSize(600, 700);
             submissionFrame.setLocationRelativeTo(this);
             submissionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            submissionFrame.getContentPane().setBackground(PIUS_WHITE);
             
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+            mainPanel.setBackground(PIUS_WHITE);
             
             JLabel titleLabel = new JLabel("Service Submission Details", JLabel.CENTER);
             titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            titleLabel.setForeground(PIUS_NAVY);
             titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             mainPanel.add(titleLabel);
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
             
             JPanel formPanel = new JPanel(new GridBagLayout());
+            formPanel.setBackground(PIUS_WHITE);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.insets = new Insets(5, 5, 5, 5);
@@ -497,38 +601,55 @@ public class allSophomores extends JFrame {
             
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            addFormField(formPanel, gbc, "Student:", studentName, 0);
-            addFormField(formPanel, gbc, "Student ID:", String.valueOf(studentId), 1);
-            addFormField(formPanel, gbc, "Service Type:", serviceType, 2);
+            Font labelFont = new Font("Arial", Font.BOLD, 14);
+            
+            addFormField(formPanel, gbc, "Student:", studentName, 0, labelFont);
+            addFormField(formPanel, gbc, "Student ID:", String.valueOf(studentId), 1, labelFont);
+            addFormField(formPanel, gbc, "Service Type:", serviceType, 2, labelFont);
             
             // Description as text area
             gbc.gridx = 0;
             gbc.gridy = 3;
-            formPanel.add(new JLabel("Description:"), gbc);
+            JLabel descLabel = new JLabel("Description:");
+            descLabel.setFont(labelFont);
+            descLabel.setForeground(PIUS_NAVY);
+            formPanel.add(descLabel, gbc);
             
             JTextArea descriptionArea = new JTextArea(serviceDescription, 4, 30);
             descriptionArea.setEditable(false);
             descriptionArea.setLineWrap(true);
             descriptionArea.setWrapStyleWord(true);
+            descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
+            descriptionArea.setForeground(PIUS_NAVY);
+            
             JScrollPane descScrollPane = new JScrollPane(descriptionArea);
+            descScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
             
             gbc.gridx = 1;
             gbc.gridy = 3;
             formPanel.add(descScrollPane, gbc);
             
-            addFormField(formPanel, gbc, "Service Hours:", String.valueOf(eventLength), 4);
-            addFormField(formPanel, gbc, "Supervisor Email:", supervisorEmail, 6);
-            addFormField(formPanel, gbc, "Submission Date:", dateFormat.format(submissionDate), 8);
+            addFormField(formPanel, gbc, "Service Hours:", String.valueOf(eventLength), 4, labelFont);
+            addFormField(formPanel, gbc, "Supervisor Email:", supervisorEmail, 6, labelFont);
+            addFormField(formPanel, gbc, "Submission Date:", dateFormat.format(submissionDate), 8, labelFont);
             
             // Add the form panel to a scroll pane
             JScrollPane formScrollPane = new JScrollPane(formPanel);
-            formScrollPane.setBorder(null);
+            formScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
+            formScrollPane.setBackground(PIUS_WHITE);
             mainPanel.add(formScrollPane);
             
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+            buttonPanel.setBackground(PIUS_WHITE);
+            
             JButton closeButton = new JButton("Close");
+            styleButton(closeButton, LIGHT_GRAY_BG);
+            
             JButton approveButton = new JButton("Approve");
+            styleButton(approveButton, PIUS_GOLD);
+            
             JButton rejectButton = new JButton("Reject");
+            styleButton(rejectButton, PIUS_GOLD);
 
             closeButton.addActionListener((ActionEvent e) -> {
                 submissionFrame.dispose();
@@ -610,20 +731,42 @@ public class allSophomores extends JFrame {
         }
     }
     
-    private void addFormField(JPanel panel, GridBagConstraints gbc, String labelText, String value, int row) {
+    private void addFormField(JPanel panel, GridBagConstraints gbc, String labelText, String value, int row, Font labelFont) {
         gbc.gridx = 0;
         gbc.gridy = row;
-        panel.add(new JLabel(labelText), gbc);
+        JLabel label = new JLabel(labelText);
+        label.setFont(labelFont);
+        label.setForeground(PIUS_NAVY);
+        panel.add(label, gbc);
         
         JTextField field = new JTextField(value, 30);
         field.setEditable(false);
+        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
         gbc.gridx = 1;
         panel.add(field, gbc);
     }
     
+    // Overload the addFormField method to maintain backward compatibility
+    private void addFormField(JPanel panel, GridBagConstraints gbc, String labelText, String value, int row) {
+        addFormField(panel, gbc, labelText, value, row, new Font("Arial", Font.BOLD, 14));
+    }
+    
+    // Helper method to style buttons consistently
+    private void styleButton(JButton button, Color bgColor) {
+        button.setBackground(bgColor);
+        button.setForeground(PIUS_NAVY);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            allFreshmen frame = new allFreshmen();
+            allSophomores frame = new allSophomores();
             frame.setVisible(true);
         });
     }

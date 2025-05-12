@@ -38,6 +38,12 @@ import com.piusxi.student.database.studentInformationDatabase;
 
 public class adminHomepage extends JFrame {
     
+    // Pius XI school colors - added for consistency with student side
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
+    
     private JTable recentSubmissionsTable;
     private DefaultTableModel tableModel;
 
@@ -51,12 +57,14 @@ public class adminHomepage extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(PIUS_WHITE);
         
         // Create menu bar
         createMenuBar();
         
         // Create main content panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Create side panel (left side)
         JPanel sidePanel = createSidePanel();
@@ -72,20 +80,35 @@ public class adminHomepage extends JFrame {
     
     public void createMenuBar() {
         JMenuBar navigationBar = new JMenuBar();
+        navigationBar.setBackground(PIUS_NAVY);
+        navigationBar.setForeground(PIUS_WHITE);
+        navigationBar.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, PIUS_WHITE));
 
         // Home menu
         JMenu homeMenu = new JMenu("Home");
+        homeMenu.setForeground(PIUS_WHITE);
+        homeMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         homeMenu.add(exit);
         exit.addActionListener((ActionEvent e) -> {
             dispose();
+            
             System.exit(0);
         });
 
         // Students menu
         JMenu studentsMenu = new JMenu("Students");
+        studentsMenu.setForeground(PIUS_WHITE);
+        studentsMenu.setFont(new Font("Arial", Font.BOLD, 14));
         
         JMenuItem allStudents = new JMenuItem("All");
+        allStudents.setBackground(PIUS_WHITE);
+        allStudents.setForeground(PIUS_NAVY);
+        allStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(allStudents);
         allStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -95,6 +118,9 @@ public class adminHomepage extends JFrame {
         });
 
         JMenuItem freshmenStudents = new JMenuItem("Freshmen");
+        freshmenStudents.setBackground(PIUS_WHITE);
+        freshmenStudents.setForeground(PIUS_NAVY);
+        freshmenStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(freshmenStudents);
         freshmenStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -104,6 +130,9 @@ public class adminHomepage extends JFrame {
         });
 
         JMenuItem sophomoreStudents = new JMenuItem("Sophomores");
+        sophomoreStudents.setBackground(PIUS_WHITE);
+        sophomoreStudents.setForeground(PIUS_NAVY);
+        sophomoreStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(sophomoreStudents);
         sophomoreStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -113,6 +142,9 @@ public class adminHomepage extends JFrame {
         });
         
         JMenuItem juniorStudents = new JMenuItem("Juniors");
+        juniorStudents.setBackground(PIUS_WHITE);
+        juniorStudents.setForeground(PIUS_NAVY);
+        juniorStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(juniorStudents);
         juniorStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -122,6 +154,9 @@ public class adminHomepage extends JFrame {
         });
 
         JMenuItem seniorStudents = new JMenuItem("Seniors");
+        seniorStudents.setBackground(PIUS_WHITE);
+        seniorStudents.setForeground(PIUS_NAVY);
+        seniorStudents.setFont(new Font("Arial", Font.PLAIN, 14));
         studentsMenu.add(seniorStudents);
         seniorStudents.addActionListener((ActionEvent e) -> {
             dispose();
@@ -132,7 +167,13 @@ public class adminHomepage extends JFrame {
 
         // Reports menu
         JMenu reportsMenu = new JMenu("Reports");
+        reportsMenu.setForeground(PIUS_WHITE);
+        reportsMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem generateReports = new JMenuItem("Generate Report");
+        generateReports.setBackground(PIUS_WHITE);
+        generateReports.setForeground(PIUS_NAVY);
+        generateReports.setFont(new Font("Arial", Font.PLAIN, 14));
         reportsMenu.add(generateReports);
         generateReports.addActionListener((ActionEvent e) -> {
             try {
@@ -167,24 +208,30 @@ public class adminHomepage extends JFrame {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setPreferredSize(new Dimension(200, 0));
         sidePanel.setBorder(BorderFactory.createEtchedBorder());
-        sidePanel.setBackground(new Color(230, 230, 250));
+        sidePanel.setBackground(PIUS_NAVY);
 
         // Admin info section
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(new Color(220, 220, 240));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Administrator"));
+        infoPanel.setBackground(PIUS_WHITE);
+        infoPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_GOLD, 2),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         infoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        infoPanel.setMaximumSize(new Dimension(190, 90));
+        infoPanel.setMaximumSize(new Dimension(180, 90));
 
         JLabel roleLabel = new JLabel("Role: Administrator");
+        roleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        roleLabel.setForeground(PIUS_NAVY);
+        roleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         infoPanel.add(Box.createVerticalStrut(5));
         infoPanel.add(roleLabel);
         infoPanel.add(Box.createVerticalStrut(5));
 
         // Navigation buttons
-        JButton viewAllStudentsBtn = new JButton("View All Students");
+        JButton viewAllStudentsBtn = createNavButton("View All Students");
         viewAllStudentsBtn.addActionListener((ActionEvent e) -> {
             dispose();
             SwingUtilities.invokeLater(() -> {
@@ -192,7 +239,7 @@ public class adminHomepage extends JFrame {
             });
         });
 
-        JButton viewFreshmenBtn = new JButton("View Freshmen");
+        JButton viewFreshmenBtn = createNavButton("View Freshmen");
         viewFreshmenBtn.addActionListener((ActionEvent e) -> {
             dispose();
             SwingUtilities.invokeLater(() -> {
@@ -200,7 +247,7 @@ public class adminHomepage extends JFrame {
             });
         });
 
-        JButton viewSophomoresBtn = new JButton("View Sophomores");
+        JButton viewSophomoresBtn = createNavButton("View Sophomores");
         viewSophomoresBtn.addActionListener((ActionEvent e) -> {
             dispose();
             SwingUtilities.invokeLater(() -> {
@@ -208,7 +255,7 @@ public class adminHomepage extends JFrame {
             });
         });
 
-        JButton viewJuniorsBtn = new JButton("View Juniors");
+        JButton viewJuniorsBtn = createNavButton("View Juniors");
         viewJuniorsBtn.addActionListener((ActionEvent e) -> {
             dispose();
             SwingUtilities.invokeLater(() -> {
@@ -216,7 +263,7 @@ public class adminHomepage extends JFrame {
             });
         });
 
-        JButton viewSeniorsBtn = new JButton("View Seniors");
+        JButton viewSeniorsBtn = createNavButton("View Seniors");
         viewSeniorsBtn.addActionListener((ActionEvent e) -> {
             dispose();
             SwingUtilities.invokeLater(() -> {
@@ -224,7 +271,7 @@ public class adminHomepage extends JFrame {
             });
         });
 
-        JButton generateReportBtn = new JButton("Generate Report");
+        JButton generateReportBtn = createNavButton("Generate Report");
         generateReportBtn.addActionListener((ActionEvent e) -> {
             try {
                 String reportPath = generateReport.generateFile(null);
@@ -246,14 +293,6 @@ public class adminHomepage extends JFrame {
             }
         });
 
-        // Make buttons fill width
-        viewAllStudentsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewFreshmenBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewSophomoresBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewJuniorsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewSeniorsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        generateReportBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
         // Add some space between components
         sidePanel.add(Box.createVerticalStrut(20));
         sidePanel.add(infoPanel);
@@ -273,23 +312,40 @@ public class adminHomepage extends JFrame {
         return sidePanel;
     }
     
+    // Helper method to create consistently styled navigation buttons
+    private JButton createNavButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(PIUS_GOLD);
+        button.setForeground(PIUS_NAVY);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(180, 35));
+        return button;
+    }
+    
     private JPanel createCenterPanel() {
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        centerPanel.setBackground(PIUS_WHITE);
 
         // Add a welcome header
         JLabel headerLabel = new JLabel("Dashboard");
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        headerLabel.setForeground(PIUS_NAVY);
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
         centerPanel.add(headerLabel, BorderLayout.NORTH);
 
         // Create a panel for dashboard contents
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        contentPanel.setBackground(PIUS_WHITE);
         
         // Dashboard stats at the top
         JPanel dashboardPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         dashboardPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        dashboardPanel.setBackground(PIUS_WHITE);
 
         // Loading stats from database
         int[] stats = loadAdminDashboardStats();
@@ -303,7 +359,15 @@ public class adminHomepage extends JFrame {
 
         // Recent submissions table
         JPanel recentSubmissionsPanel = new JPanel(new BorderLayout());
-        recentSubmissionsPanel.setBorder(BorderFactory.createTitledBorder("Recent Service Submissions"));
+        recentSubmissionsPanel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(PIUS_GOLD, 2),
+            "Recent Service Submissions",
+            javax.swing.border.TitledBorder.CENTER,
+            javax.swing.border.TitledBorder.TOP,
+            new Font("Arial", Font.BOLD, 16),
+            PIUS_NAVY
+        ));
+        recentSubmissionsPanel.setBackground(PIUS_WHITE);
 
         // Create table model with column names
         tableModel = new DefaultTableModel() {
@@ -324,9 +388,18 @@ public class adminHomepage extends JFrame {
         recentSubmissionsTable = new JTable(tableModel);
         recentSubmissionsTable.setFillsViewportHeight(true);
         recentSubmissionsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        recentSubmissionsTable.setRowHeight(25);
+        recentSubmissionsTable.setFont(new Font("Arial", Font.PLAIN, 14));
+        
+        // Style the table header
+        recentSubmissionsTable.getTableHeader().setBackground(PIUS_NAVY);
+        recentSubmissionsTable.getTableHeader().setForeground(PIUS_WHITE);
+        recentSubmissionsTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 
         // Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(recentSubmissionsTable);
+        scrollPane.getViewport().setBackground(PIUS_WHITE);
+        scrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
         recentSubmissionsPanel.add(scrollPane, BorderLayout.CENTER);
         
         // Load recent submissions into the table
@@ -336,11 +409,17 @@ public class adminHomepage extends JFrame {
         
         // Add refresh button at the bottom
         JButton refreshButton = new JButton("Refresh Data");
+        refreshButton.setBackground(PIUS_GOLD);
+        refreshButton.setForeground(PIUS_NAVY);
+        refreshButton.setFont(new Font("Arial", Font.BOLD, 14));
+        refreshButton.setFocusPainted(false);
+        refreshButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         refreshButton.addActionListener((ActionEvent e) -> {
             refreshData();
         });
         
         JPanel refreshPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        refreshPanel.setBackground(PIUS_WHITE);
         refreshPanel.add(refreshButton);
         contentPanel.add(refreshPanel, BorderLayout.SOUTH);
         
@@ -351,17 +430,22 @@ public class adminHomepage extends JFrame {
     
     private JPanel createDashboardCard(String title, String value) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        card.setBackground(Color.WHITE);
+        card.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 2, true),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        card.setBackground(PIUS_WHITE);
         
         JLabel titleLabel = new JLabel(title);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(PIUS_NAVY);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         
         JLabel valueLabel = new JLabel(value);
         valueLabel.setHorizontalAlignment(JLabel.CENTER);
         valueLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        valueLabel.setForeground(PIUS_GOLD);
         
         // Store references to value labels for later updates
         switch (title) {
