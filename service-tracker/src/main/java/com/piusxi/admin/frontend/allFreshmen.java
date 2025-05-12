@@ -507,7 +507,7 @@ public class allFreshmen extends JFrame {
             JButton rejectButton = new JButton("Reject");
 
             closeButton.addActionListener((ActionEvent e) -> {
-                dispose();
+                submissionFrame.dispose();
 
                 SwingUtilities.invokeLater(() -> {
                     new adminHomepage().setVisible(true);
@@ -515,15 +515,55 @@ public class allFreshmen extends JFrame {
             });
 
             approveButton.addActionListener((ActionEvent e) -> {
-                serviceStatus.setApproved();
+                try {
+                    int submissionId = resultSet.getInt("submission_id");
+                    boolean success = serviceStatus.setApproved(submissionId);
 
-                dispose();
+                    if (success) {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Submission approved successfully!", 
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } 
+                    else {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Failed to approve submission.", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    submissionFrame.dispose();
+                } 
+                catch (SQLException se) {
+                    se.printStackTrace();
+                    JOptionPane.showMessageDialog(submissionFrame, 
+                        "Database error: " + se.getMessage(), 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
             });
 
             rejectButton.addActionListener((ActionEvent e) -> {
-                serviceStatus.setRejected();
+                try {
+                    int submissionId = resultSet.getInt("submission_id");
+                    boolean success = serviceStatus.setRejected(submissionId);
 
-                dispose();
+                    if (success) {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Submission rejected.", 
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } 
+                    else {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Failed to reject submission.", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    submissionFrame.dispose();
+                } 
+                catch (SQLException se) {
+                    se.printStackTrace();
+                    JOptionPane.showMessageDialog(submissionFrame, 
+                        "Database error: " + se.getMessage(), 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
             });
 
             buttonPanel.add(rejectButton);

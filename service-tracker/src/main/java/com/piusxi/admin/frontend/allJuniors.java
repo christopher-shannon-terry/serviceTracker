@@ -3,6 +3,7 @@ package com.piusxi.admin.frontend;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -45,6 +46,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.piusxi.admin.backend.generateReport;
+import com.piusxi.admin.backend.serviceStatus;
 import com.piusxi.admin.backend.showJuniors;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 import com.piusxi.student.database.studentInformationDatabase;
@@ -523,13 +525,77 @@ public class allJuniors extends JFrame {
             formScrollPane.setBorder(null);
             mainPanel.add(formScrollPane);
             
-            // Close button
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
             JButton closeButton = new JButton("Close");
-            closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            closeButton.addActionListener(e -> submissionFrame.dispose());
-            
+            JButton approveButton = new JButton("Approve");
+            JButton rejectButton = new JButton("Reject");
+
+            closeButton.addActionListener((ActionEvent e) -> {
+                submissionFrame.dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new adminHomepage().setVisible(true);
+                });
+            });
+
+            approveButton.addActionListener((ActionEvent e) -> {
+                try {
+                    int submissionId = resultSet.getInt("submission_id");
+                    boolean success = serviceStatus.setApproved(submissionId);
+
+                    if (success) {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Submission approved successfully!", 
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } 
+                    else {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Failed to approve submission.", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    submissionFrame.dispose();
+                } 
+                catch (SQLException se) {
+                    se.printStackTrace();
+                    JOptionPane.showMessageDialog(submissionFrame, 
+                        "Database error: " + se.getMessage(), 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            rejectButton.addActionListener((ActionEvent e) -> {
+                try {
+                    int submissionId = resultSet.getInt("submission_id");
+                    boolean success = serviceStatus.setRejected(submissionId);
+
+                    if (success) {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Submission rejected.", 
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } 
+                    else {
+                        JOptionPane.showMessageDialog(submissionFrame, 
+                            "Failed to reject submission.", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    submissionFrame.dispose();
+                } 
+                catch (SQLException se) {
+                    se.printStackTrace();
+                    JOptionPane.showMessageDialog(submissionFrame, 
+                        "Database error: " + se.getMessage(), 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            buttonPanel.add(rejectButton);
+            buttonPanel.add(approveButton);
+            buttonPanel.add(closeButton);
+
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-            mainPanel.add(closeButton);
+            mainPanel.add(buttonPanel);
             
             submissionFrame.add(mainPanel);
             submissionFrame.setVisible(true);
