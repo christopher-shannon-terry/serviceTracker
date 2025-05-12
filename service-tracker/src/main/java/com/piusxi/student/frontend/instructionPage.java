@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,13 +21,21 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 public class instructionPage extends JFrame {
+    // Pius XI school colors
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
 
     public instructionPage() {
         setSize(800, 600);
         setTitle("Service Tracker - Instructions");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setBackground(PIUS_WHITE);
 
         createMenuBar();
         instructions();
@@ -34,10 +43,18 @@ public class instructionPage extends JFrame {
 
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(PIUS_NAVY);
+        menuBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
         // File menu
         JMenu fileMenu = new JMenu("Home");
+        fileMenu.setForeground(PIUS_WHITE);
+        fileMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem backToDashboard = new JMenuItem("Dashboard");
+        backToDashboard.setBackground(PIUS_WHITE);
+        backToDashboard.setForeground(PIUS_NAVY);
+        backToDashboard.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(backToDashboard);
         
         backToDashboard.addActionListener(new ActionListener() {
@@ -50,6 +67,9 @@ public class instructionPage extends JFrame {
         });
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(exit);
         exit.addActionListener(new ActionListener() {
             @Override
@@ -61,7 +81,13 @@ public class instructionPage extends JFrame {
         
         // Service menu
         JMenu serviceMenu = new JMenu("Service");
+        serviceMenu.setForeground(PIUS_WHITE);
+        serviceMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem serviceForm = new JMenuItem("Submit Service");
+        serviceForm.setBackground(PIUS_WHITE);
+        serviceForm.setForeground(PIUS_NAVY);
+        serviceForm.setFont(new Font("Arial", Font.PLAIN, 14));
         serviceMenu.add(serviceForm);
 
         serviceForm.addActionListener(new ActionListener() {
@@ -74,7 +100,13 @@ public class instructionPage extends JFrame {
         
         // Help menu
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.setForeground(PIUS_WHITE);
+        helpMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem resetPassword = new JMenuItem("Reset Password");
+        resetPassword.setBackground(PIUS_WHITE);
+        resetPassword.setForeground(PIUS_NAVY);
+        resetPassword.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(resetPassword);
 
         resetPassword.addActionListener(new ActionListener() {
@@ -100,10 +132,12 @@ public class instructionPage extends JFrame {
         // Main panel with appropriate layout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Title for the instructions page
         JLabel titleLabel = new JLabel("Service Tracker Instructions");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setForeground(PIUS_NAVY);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
@@ -112,6 +146,7 @@ public class instructionPage extends JFrame {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        contentPanel.setBackground(PIUS_WHITE);
         
         // Add instruction sections
         addSection(contentPanel, "Overview", 
@@ -161,11 +196,17 @@ public class instructionPage extends JFrame {
         
         // Add the content panel to a scroll pane
         JScrollPane scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
+        scrollPane.getViewport().setBackground(PIUS_WHITE);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         
         // Create button to return to dashboard
         JButton returnButton = new JButton("Return to Dashboard");
+        returnButton.setBackground(PIUS_GOLD);
+        returnButton.setForeground(PIUS_NAVY);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 14));
+        returnButton.setFocusPainted(false);
+        returnButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,6 +217,8 @@ public class instructionPage extends JFrame {
         });
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(PIUS_WHITE);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         buttonPanel.add(returnButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         
@@ -187,20 +230,30 @@ public class instructionPage extends JFrame {
      * Helper method to add a section to the instructions
      */
     private void addSection(JPanel panel, String title, String content) {
-        // Section title
+        // Section title with blue color
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setForeground(PIUS_NAVY);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(titleLabel);
-        panel.add(Box.createRigidArea(new Dimension(0, 5)));
         
-        // Section content
+        // Add gold separator line
+        JPanel separator = new JPanel();
+        separator.setMaximumSize(new Dimension(600, 2));
+        separator.setPreferredSize(new Dimension(600, 2));
+        separator.setBackground(PIUS_GOLD);
+        separator.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(separator);
+        panel.add(Box.createRigidArea(new Dimension(0, 8)));
+        
+        // Section content with navy text
         JTextArea contentArea = new JTextArea(content);
         contentArea.setEditable(false);
         contentArea.setLineWrap(true);
         contentArea.setWrapStyleWord(true);
         contentArea.setOpaque(false);
         contentArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        contentArea.setForeground(PIUS_NAVY);
         contentArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(contentArea);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));

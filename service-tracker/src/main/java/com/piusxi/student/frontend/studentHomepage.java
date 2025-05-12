@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -28,12 +29,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import com.piusxi.student.backend.studentSession;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 
 public class studentHomepage extends JFrame {
+
+    // Pius XI school colors
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
 
     private String studentId;
     private String firstName;
@@ -50,6 +59,7 @@ public class studentHomepage extends JFrame {
         setTitle("Student Service Tracker");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setBackground(PIUS_WHITE);
 
         if (studentSession.getInstance().isSessionActive()) {
             setTitle("Student Service Tracker - " + studentSession.getInstance().getFullName());
@@ -69,7 +79,8 @@ public class studentHomepage extends JFrame {
             dispose();
             
             SwingUtilities.invokeLater(() -> {
-                new studentLogin().setVisible(true);
+                studentLogin login = new studentLogin();
+                login.setVisible(true);
             });
 
             return;
@@ -80,6 +91,7 @@ public class studentHomepage extends JFrame {
         
         // Create main content panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Create side panel (left side)
         JPanel sidePanel = createSidePanel();
@@ -99,63 +111,79 @@ public class studentHomepage extends JFrame {
     
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(PIUS_NAVY);
+        menuBar.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, PIUS_WHITE));
         
         // File menu
         JMenu fileMenu = new JMenu("Home");
+        fileMenu.setForeground(PIUS_WHITE);
+        fileMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(exit);
-        exit.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            System.exit(0);
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                System.exit(0);
+            }
         });
         
         // Service menu
         JMenu serviceMenu = new JMenu("Service");
+        serviceMenu.setForeground(PIUS_WHITE);
+        serviceMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem serviceForm = new JMenuItem("Submit Service");
+        serviceForm.setBackground(PIUS_WHITE);
+        serviceForm.setForeground(PIUS_NAVY);
+        serviceForm.setFont(new Font("Arial", Font.PLAIN, 14));
         serviceMenu.add(serviceForm);
 
-        serviceForm.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new serviceReportingForm().setVisible(true);
-            });
-        });
-
-        JMenuItem submissions = new JMenuItem("Submissions");
-        serviceMenu.add(submissions);
-
-        submissions.addActionListener((ActionEvent e) -> {
-            SwingUtilities.invokeLater(() -> {
-                dispose();
-
-                new viewAllSubmissions().setVisible(true);
-            });
+        serviceForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                serviceReportingForm serviceForm = new serviceReportingForm();
+                serviceForm.setVisible(true);
+            }
         });
         
         // Help menu
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.setForeground(PIUS_WHITE);
+        helpMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem instructions = new JMenuItem("Instructions");
+        instructions.setBackground(PIUS_WHITE);
+        instructions.setForeground(PIUS_NAVY);
+        instructions.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(instructions);
         
-        instructions.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new instructionPage().setVisible(true);
-            });
+        instructions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                instructionPage instructionPage = new instructionPage();
+                instructionPage.setVisible(true);
+            }
         });
 
         JMenuItem resetPassword = new JMenuItem("Reset Password");
+        resetPassword.setBackground(PIUS_WHITE);
+        resetPassword.setForeground(PIUS_NAVY);
+        resetPassword.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(resetPassword);
 
-        resetPassword.addActionListener((ActionEvent e) -> {
-            dispose();
-            
-            SwingUtilities.invokeLater(() -> {
-                new forgotPasswordForm().setVisible(true);
-            });
+        resetPassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                forgotPasswordForm form = new forgotPasswordForm();
+                form.setVisible(true);
+            }
         });
         
         // Add menus to menu bar
@@ -170,22 +198,44 @@ public class studentHomepage extends JFrame {
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-        sidePanel.setPreferredSize(new Dimension(200, 0));
-        sidePanel.setBorder(BorderFactory.createEtchedBorder());
-        sidePanel.setBackground(new Color(230, 230, 250));
+        sidePanel.setPreferredSize(new Dimension(220, 0));
+        sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        sidePanel.setBackground(PIUS_NAVY);
 
         // Student info section
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(new Color(220, 220, 240));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Student Information"));
+        infoPanel.setBackground(PIUS_WHITE);
+        infoPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_GOLD, 2),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         infoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        infoPanel.setMaximumSize(new Dimension(190, 150));
+        infoPanel.setMaximumSize(new Dimension(200, 180));
+
+        // Style for info panel labels
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Color labelColor = PIUS_NAVY;
 
         JLabel nameLabel = new JLabel("Name: " + firstName + " " + lastName);
+        nameLabel.setForeground(labelColor);
+        nameLabel.setFont(labelFont);
+        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         JLabel idLabel = new JLabel("ID: " + studentId);
+        idLabel.setForeground(labelColor);
+        idLabel.setFont(labelFont);
+        idLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         JLabel gradeLabel = new JLabel("Grade: " + gradeYear);
+        gradeLabel.setForeground(labelColor);
+        gradeLabel.setFont(labelFont);
+        gradeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         JLabel gradYearLabel = new JLabel("Graduation: " + gradYear);
+        gradYearLabel.setForeground(labelColor);
+        gradYearLabel.setFont(labelFont);
+        gradYearLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         infoPanel.add(Box.createVerticalStrut(5));
         infoPanel.add(nameLabel);
@@ -197,42 +247,68 @@ public class studentHomepage extends JFrame {
         infoPanel.add(gradYearLabel);
         infoPanel.add(Box.createVerticalStrut(5));
 
-        // Add buttons to the side panel
+        // Add buttons to the side panel with Pius colors
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+        
         JButton submitServiceBtn = new JButton("Submit Service");
-        submitServiceBtn.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new serviceReportingForm().setVisible(true);
-            });
+        submitServiceBtn.setBackground(PIUS_GOLD);
+        submitServiceBtn.setForeground(PIUS_NAVY);
+        submitServiceBtn.setFont(buttonFont);
+        submitServiceBtn.setFocusPainted(false);
+        submitServiceBtn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        submitServiceBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                serviceReportingForm form = new serviceReportingForm();
+                form.setVisible(true);
+            }
         });
 
         JButton viewSubmissionsBtn = new JButton("View All Submissions");
-        viewSubmissionsBtn.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new viewAllSubmissions().setVisible(true);
-            });
+        viewSubmissionsBtn.setBackground(PIUS_GOLD);
+        viewSubmissionsBtn.setForeground(PIUS_NAVY);
+        viewSubmissionsBtn.setFont(buttonFont);
+        viewSubmissionsBtn.setFocusPainted(false);
+        viewSubmissionsBtn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        viewSubmissionsBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // This would open a detailed view of all submissions
+                viewAllSubmissions allSubmissions = new viewAllSubmissions();
+                allSubmissions.setVisible(true);
+            }
         });
 
         JButton resetPasswordBtn = new JButton("Change Password");
-        resetPasswordBtn.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new forgotPasswordForm().setVisible(true);
-            });
+        resetPasswordBtn.setBackground(PIUS_GOLD);
+        resetPasswordBtn.setForeground(PIUS_NAVY);
+        resetPasswordBtn.setFont(buttonFont);
+        resetPasswordBtn.setFocusPainted(false);
+        resetPasswordBtn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        resetPasswordBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                forgotPasswordForm form = new forgotPasswordForm();
+                form.setVisible(true);
+            }
         });
 
         JButton logoutBtn = new JButton("Logout");
-        logoutBtn.addActionListener((ActionEvent e) -> {
-            studentSession.getInstance().endSession();
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new studentLogin().setVisible(true);
-            });
+        logoutBtn.setBackground(Color.LIGHT_GRAY);
+        logoutBtn.setForeground(PIUS_NAVY);
+        logoutBtn.setFont(buttonFont);
+        logoutBtn.setFocusPainted(false);
+        logoutBtn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        logoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentSession.getInstance().endSession();
+                dispose();
+                studentLogin login = new studentLogin();
+                login.setVisible(true);
+            }
         });
 
         // Make buttons fill width
@@ -240,6 +316,13 @@ public class studentHomepage extends JFrame {
         viewSubmissionsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         resetPasswordBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Set maximum width for buttons
+        Dimension btnDimension = new Dimension(200, 35);
+        submitServiceBtn.setMaximumSize(btnDimension);
+        viewSubmissionsBtn.setMaximumSize(btnDimension);
+        resetPasswordBtn.setMaximumSize(btnDimension);
+        logoutBtn.setMaximumSize(btnDimension);
         
         // Add some space between components
         sidePanel.add(Box.createVerticalStrut(20));
@@ -252,6 +335,7 @@ public class studentHomepage extends JFrame {
         sidePanel.add(resetPasswordBtn);
         sidePanel.add(Box.createVerticalStrut(30));
         sidePanel.add(logoutBtn);
+        sidePanel.add(Box.createVerticalGlue());
         
         return sidePanel;
     }
@@ -259,20 +343,25 @@ public class studentHomepage extends JFrame {
     private JPanel createCenterPanel() {
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        centerPanel.setBackground(PIUS_WHITE);
 
         // Add a welcome header
         JLabel headerLabel = new JLabel("Welcome, " + firstName + "!");
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        headerLabel.setForeground(PIUS_NAVY);
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         centerPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // Create a tabbed panel for dashboard contents
+        // Create a panel for dashboard contents
         JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        contentPanel.setBackground(PIUS_WHITE);
         
         // Dashboard stats at the top
-        JPanel dashboardPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JPanel dashboardPanel = new JPanel(new GridLayout(2, 2, 15, 15));
         dashboardPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        dashboardPanel.setBackground(PIUS_WHITE);
 
         // Format for displaying hours with one decimal place
         DecimalFormat df = new DecimalFormat("0.0");
@@ -288,7 +377,15 @@ public class studentHomepage extends JFrame {
 
         // Recent submissions table
         JPanel recentSubmissionsPanel = new JPanel(new BorderLayout());
-        recentSubmissionsPanel.setBorder(BorderFactory.createTitledBorder("Recent Service Submissions"));
+        recentSubmissionsPanel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(PIUS_GOLD, 2),
+            "Recent Service Submissions",
+            javax.swing.border.TitledBorder.CENTER,
+            javax.swing.border.TitledBorder.TOP,
+            new Font("Arial", Font.BOLD, 16),
+            PIUS_NAVY
+        ));
+        recentSubmissionsPanel.setBackground(PIUS_WHITE);
 
         // Create table model with column names
         tableModel = new DefaultTableModel() {
@@ -307,9 +404,36 @@ public class studentHomepage extends JFrame {
         recentSubmissionsTable = new JTable(tableModel);
         recentSubmissionsTable.setFillsViewportHeight(true);
         recentSubmissionsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        recentSubmissionsTable.setRowHeight(25);
+        recentSubmissionsTable.setFont(new Font("Arial", Font.PLAIN, 14));
+        
+        // Style the table header
+        JTableHeader header = recentSubmissionsTable.getTableHeader();
+        header.setBackground(PIUS_NAVY);
+        header.setForeground(PIUS_WHITE);
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Style the table rows with alternating colors
+        recentSubmissionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                if (isSelected) {
+                    c.setBackground(PIUS_GOLD);
+                    c.setForeground(PIUS_NAVY);
+                } else {
+                    c.setBackground(row % 2 == 0 ? PIUS_WHITE : LIGHT_GRAY_BG);
+                    c.setForeground(PIUS_NAVY);
+                }
+                
+                return c;
+            }
+        });
 
-         // Add the table to a scroll pane
+        // Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(recentSubmissionsTable);
+        scrollPane.getViewport().setBackground(PIUS_WHITE);
         recentSubmissionsPanel.add(scrollPane, BorderLayout.CENTER);
         
         // Load recent submissions into the table
@@ -319,11 +443,20 @@ public class studentHomepage extends JFrame {
         
         // Add refresh button at the bottom
         JButton refreshButton = new JButton("Refresh Data");
-        refreshButton.addActionListener((ActionEvent e) -> {
-            refreshData();
+        refreshButton.setBackground(PIUS_GOLD);
+        refreshButton.setForeground(PIUS_NAVY);
+        refreshButton.setFont(new Font("Arial", Font.BOLD, 14));
+        refreshButton.setFocusPainted(false);
+        refreshButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshData();
+            }
         });
         
         JPanel refreshPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        refreshPanel.setBackground(PIUS_WHITE);
         refreshPanel.add(refreshButton);
         contentPanel.add(refreshPanel, BorderLayout.SOUTH);
         
@@ -334,17 +467,22 @@ public class studentHomepage extends JFrame {
     
     private JPanel createDashboardCard(String title, String value) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        card.setBackground(Color.WHITE);
+        card.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 2, true),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        card.setBackground(PIUS_WHITE);
         
         JLabel titleLabel = new JLabel(title);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(PIUS_NAVY);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         
         JLabel valueLabel = new JLabel(value);
         valueLabel.setHorizontalAlignment(JLabel.CENTER);
-        valueLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        valueLabel.setForeground(PIUS_GOLD);
         
         card.add(titleLabel, BorderLayout.NORTH);
         card.add(valueLabel, BorderLayout.CENTER);
@@ -409,5 +547,12 @@ public class studentHomepage extends JFrame {
         JOptionPane.showMessageDialog(this,
             "Data refreshed successfully!",
             "Refresh", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            studentHomepage homepage = new studentHomepage();
+            homepage.setVisible(true);
+        }); 
     }
 }

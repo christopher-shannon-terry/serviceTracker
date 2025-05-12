@@ -1,6 +1,7 @@
 package com.piusxi.student.frontend;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -35,7 +38,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import com.piusxi.student.backend.studentSession;
 import com.piusxi.student.database.serviceSubmissionDatabase;
@@ -45,6 +50,12 @@ import com.piusxi.student.database.serviceSubmissionDatabase;
  * Form im referencing is the serviceReportingForm.java file
  */
 public class viewAllSubmissions extends JFrame {
+    // Pius XI school colors
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
+    
     private JTable submissionsTable;
     private DefaultTableModel tableModel;
     private String studentId;
@@ -55,6 +66,7 @@ public class viewAllSubmissions extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(PIUS_WHITE);
         
         // Check if there's an active student session
         if (!studentSession.getInstance().isSessionActive()) {
@@ -71,10 +83,13 @@ public class viewAllSubmissions extends JFrame {
         // Main panel with border layout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Title at the top
         titleLabel = new JLabel("Service Submissions for " + studentName, JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PIUS_NAVY);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
         
         // Create table model with column names
@@ -96,15 +111,40 @@ public class viewAllSubmissions extends JFrame {
         submissionsTable.setFillsViewportHeight(true);
         submissionsTable.setRowHeight(25);
         submissionsTable.setFont(new Font("Arial", Font.PLAIN, 14));
-        submissionsTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Style the table header
+        JTableHeader header = submissionsTable.getTableHeader();
+        header.setBackground(PIUS_NAVY);
+        header.setForeground(PIUS_WHITE);
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Style the table rows with alternating colors
+        submissionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                if (isSelected) {
+                    c.setBackground(PIUS_GOLD);
+                    c.setForeground(PIUS_NAVY);
+                } else {
+                    c.setBackground(row % 2 == 0 ? PIUS_WHITE : LIGHT_GRAY_BG);
+                    c.setForeground(PIUS_NAVY);
+                }
+                
+                return c;
+            }
+        });
         
         // Hide the Submission ID column
         submissionsTable.getColumnModel().getColumn(4).setMinWidth(0);
         submissionsTable.getColumnModel().getColumn(4).setMaxWidth(0);
         submissionsTable.getColumnModel().getColumn(4).setWidth(0);
         
-        // Add the table to a scroll pane
+        // Add the table to a scroll pane with styled border
         JScrollPane tableScrollPane = new JScrollPane(submissionsTable);
+        tableScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
+        tableScrollPane.getViewport().setBackground(PIUS_WHITE);
         mainPanel.add(tableScrollPane, BorderLayout.CENTER);
         
         // Add double-click listener to the table
@@ -122,15 +162,21 @@ public class viewAllSubmissions extends JFrame {
         
         // Close button at the bottom
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new studentHomepage().setVisible(true);
-            });
+        closeButton.setBackground(PIUS_GOLD);
+        closeButton.setForeground(PIUS_NAVY);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 14));
+        closeButton.setFocusPainted(false);
+        closeButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
         });
         
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(PIUS_WHITE);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         buttonPanel.add(closeButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         
@@ -201,21 +247,21 @@ public class viewAllSubmissions extends JFrame {
                 }
                 
                 String query = "SELECT * FROM service_submissions WHERE submission_id = ?";
-                try (PreparedStatement statement = connection.prepareStatement(query)) {
-                    statement.setString(1, submissionId);
-                    ResultSet resultSet = statement.executeQuery();
-                    
-                    if (resultSet.next()) {
-                        showSubmissionForm(resultSet);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(this,
-                                "Submission details not found.",
-                                "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                    
-                    resultSet.close();
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, submissionId);
+                ResultSet resultSet = statement.executeQuery();
+                
+                if (resultSet.next()) {
+                    showSubmissionForm(resultSet);
                 }
+                else {
+                    JOptionPane.showMessageDialog(this,
+                        "Submission details not found.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                resultSet.close();
+                statement.close();
             }
             catch (SQLException se) {
                 JOptionPane.showMessageDialog(this,
@@ -246,14 +292,17 @@ public class viewAllSubmissions extends JFrame {
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+            mainPanel.setBackground(PIUS_WHITE);
             
             JLabel titleLabel = new JLabel("Service Submission Details", JLabel.CENTER);
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+            titleLabel.setForeground(PIUS_NAVY);
             titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             mainPanel.add(titleLabel);
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
             
             JPanel formPanel = new JPanel(new GridBagLayout());
+            formPanel.setBackground(PIUS_WHITE);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.insets = new Insets(5, 5, 5, 5);
@@ -272,46 +321,56 @@ public class viewAllSubmissions extends JFrame {
             
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            addFormField(formPanel, gbc, "Student:", studentName, 0);
-            addFormField(formPanel, gbc, "Student ID:", String.valueOf(studentId), 1);
-            addFormField(formPanel, gbc, "Service Type:", serviceType, 2);
+            // Style for field labels
+            Font labelFont = new Font("Arial", Font.BOLD, 14);
+            
+            // Add fields with Pius colors
+            addFormField(formPanel, gbc, "Student:", studentName, 0, labelFont);
+            addFormField(formPanel, gbc, "Student ID:", String.valueOf(studentId), 1, labelFont);
+            addFormField(formPanel, gbc, "Service Type:", serviceType, 2, labelFont);
             
             // Description as text area
             gbc.gridx = 0;
             gbc.gridy = 3;
-            formPanel.add(new JLabel("Description:"), gbc);
+            JLabel descLabel = new JLabel("Description:");
+            descLabel.setFont(labelFont);
+            descLabel.setForeground(PIUS_NAVY);
+            formPanel.add(descLabel, gbc);
             
             JTextArea descriptionArea = new JTextArea(serviceDescription, 4, 30);
             descriptionArea.setEditable(false);
             descriptionArea.setLineWrap(true);
             descriptionArea.setWrapStyleWord(true);
+            descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
+            descriptionArea.setForeground(PIUS_NAVY);
             JScrollPane descScrollPane = new JScrollPane(descriptionArea);
+            descScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
             
             gbc.gridx = 1;
             gbc.gridy = 3;
             formPanel.add(descScrollPane, gbc);
             
-            addFormField(formPanel, gbc, "Service Hours:", String.valueOf(eventLength), 4);
-            addFormField(formPanel, gbc, "Supervisor Email:", supervisorEmail, 5);
-            addFormField(formPanel, gbc, "Submission Date:", dateFormat.format(submissionDate), 6);
-            addFormField(formPanel, gbc, "Status:", status, 7);
+            addFormField(formPanel, gbc, "Service Hours:", String.valueOf(eventLength), 4, labelFont);
+            addFormField(formPanel, gbc, "Supervisor Email:", supervisorEmail, 5, labelFont);
+            addFormField(formPanel, gbc, "Submission Date:", dateFormat.format(submissionDate), 6, labelFont);
+            addFormField(formPanel, gbc, "Status:", status, 7, labelFont);
             
             // Add the form panel to a scroll pane
             JScrollPane formScrollPane = new JScrollPane(formPanel);
-            formScrollPane.setBorder(null);
+            formScrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
+            formScrollPane.setBackground(PIUS_WHITE);
             mainPanel.add(formScrollPane);
             
             // Close button
             JButton closeButton = new JButton("Close");
+            closeButton.setBackground(PIUS_GOLD);
+            closeButton.setForeground(PIUS_NAVY);
+            closeButton.setFont(new Font("Arial", Font.BOLD, 14));
+            closeButton.setFocusPainted(false);
+            closeButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
             closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            closeButton.addActionListener((ActionEvent e) -> {
-                dispose();
-
-                SwingUtilities.invokeLater(() -> {
-                    new studentHomepage().setVisible(true);
-                });
-            });
-
+            closeButton.addActionListener(e -> submissionFrame.dispose());
+            
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
             mainPanel.add(closeButton);
             
@@ -327,74 +386,118 @@ public class viewAllSubmissions extends JFrame {
         }
     }
     
-    private void addFormField(JPanel panel, GridBagConstraints gbc, String labelText, String value, int row) {
+    private void addFormField(JPanel panel, GridBagConstraints gbc, String labelText, String value, int row, Font labelFont) {
         gbc.gridx = 0;
         gbc.gridy = row;
-        panel.add(new JLabel(labelText), gbc);
+        JLabel label = new JLabel(labelText);
+        label.setFont(labelFont);
+        label.setForeground(PIUS_NAVY);
+        panel.add(label, gbc);
         
         JTextField field = new JTextField(value, 30);
         field.setEditable(false);
+        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setForeground(PIUS_NAVY);
+        field.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
         gbc.gridx = 1;
         panel.add(field, gbc);
     }
 
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(PIUS_NAVY);
+        menuBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
         // File menu
         JMenu fileMenu = new JMenu("Home");
+        fileMenu.setForeground(PIUS_WHITE);
+        fileMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem dashboard = new JMenuItem("Dashboard");
+        dashboard.setBackground(PIUS_WHITE);
+        dashboard.setForeground(PIUS_NAVY);
+        dashboard.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(dashboard);
-        dashboard.addActionListener((ActionEvent e) -> {
-            dispose();
-            
-            SwingUtilities.invokeLater(() -> {
-                new studentHomepage().setVisible(true);
-            });
+        dashboard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    studentHomepage homepage = new studentHomepage();
+                    homepage.setVisible(true);
+                });
+            }
         });
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(exit);
-        exit.addActionListener((ActionEvent e) -> {
-            dispose();
-            System.exit(0);
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                System.exit(0);
+            }
         });
         
         // Service menu
         JMenu serviceMenu = new JMenu("Service");
+        serviceMenu.setForeground(PIUS_WHITE);
+        serviceMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem serviceForm = new JMenuItem("Submit Service");
+        serviceForm.setBackground(PIUS_WHITE);
+        serviceForm.setForeground(PIUS_NAVY);
+        serviceForm.setFont(new Font("Arial", Font.PLAIN, 14));
         serviceMenu.add(serviceForm);
 
-        serviceForm.addActionListener((ActionEvent e) -> {
-            dispose();
-
-            SwingUtilities.invokeLater(() -> {
-                new serviceReportingForm().setVisible(true);
-            });
+        serviceForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                serviceReportingForm serviceForm = new serviceReportingForm();
+                serviceForm.setVisible(true);
+            }
         });
         
         // Help menu
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.setForeground(PIUS_WHITE);
+        helpMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem instructions = new JMenuItem("Instructions");
+        instructions.setBackground(PIUS_WHITE);
+        instructions.setForeground(PIUS_NAVY);
+        instructions.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(instructions);
         
-        instructions.addActionListener((ActionEvent e) -> {
-            dispose();
-            
-            SwingUtilities.invokeLater(() -> {
-                new instructionPage().setVisible(true);
-            });
+        instructions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                instructionPage instructionPage = new instructionPage();
+                instructionPage.setVisible(true);
+            }
         });
 
         JMenuItem resetPassword = new JMenuItem("Reset Password");
+        resetPassword.setBackground(PIUS_WHITE);
+        resetPassword.setForeground(PIUS_NAVY);
+        resetPassword.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(resetPassword);
 
-        resetPassword.addActionListener((ActionEvent e) -> {
-            dispose();
-            
-            SwingUtilities.invokeLater(() -> {
-                new forgotPasswordForm().setVisible(true);
-            });
+        resetPassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                forgotPasswordForm form = new forgotPasswordForm();
+                form.setVisible(true);
+            }
         });
         
         // Add menus to menu bar
@@ -406,11 +509,10 @@ public class viewAllSubmissions extends JFrame {
         setJMenuBar(menuBar);
     }
     
-    
-    /* public static void main(String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             viewAllSubmissions frame = new viewAllSubmissions();
             frame.setVisible(true);
         });
-    } */
+    }
 }

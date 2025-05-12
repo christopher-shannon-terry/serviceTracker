@@ -1,6 +1,7 @@
 package com.piusxi.student.frontend;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -37,6 +38,11 @@ import com.piusxi.student.backend.studentSession;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 
 public class serviceReportingForm extends JFrame {
+    // Pius XI school colors
+    private static final Color PIUS_NAVY = new Color(0, 32, 91);
+    private static final Color PIUS_GOLD = new Color(255, 215, 0);
+    private static final Color PIUS_WHITE = Color.WHITE;
+    private static final Color LIGHT_GRAY_BG = new Color(245, 245, 250);
     
     private JFormattedTextField eventDateField;
     private JTextField hoursServedField;
@@ -54,6 +60,7 @@ public class serviceReportingForm extends JFrame {
         setTitle("Service Reporting Form");
         setSize(800, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setBackground(PIUS_WHITE);
 
         createMenuBar();
         createForm();
@@ -61,10 +68,18 @@ public class serviceReportingForm extends JFrame {
 
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(PIUS_NAVY);
+        menuBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
         // File menu
         JMenu fileMenu = new JMenu("Home");
+        fileMenu.setForeground(PIUS_WHITE);
+        fileMenu.setFont(new Font("Arial", Font.BOLD, 14));
+        
         JMenuItem dashboard = new JMenuItem("Dashboard");
+        dashboard.setBackground(PIUS_WHITE);
+        dashboard.setForeground(PIUS_NAVY);
+        dashboard.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(dashboard);
         dashboard.addActionListener(new ActionListener() {
             @Override
@@ -79,6 +94,9 @@ public class serviceReportingForm extends JFrame {
         });
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.setBackground(PIUS_WHITE);
+        exit.setForeground(PIUS_NAVY);
+        exit.setFont(new Font("Arial", Font.PLAIN, 14));
         fileMenu.add(exit);
         exit.addActionListener(new ActionListener() {
             @Override
@@ -90,32 +108,30 @@ public class serviceReportingForm extends JFrame {
         
         // Service menu
         JMenu serviceMenu = new JMenu("Service");
+        serviceMenu.setForeground(PIUS_WHITE);
+        serviceMenu.setFont(new Font("Arial", Font.BOLD, 14));
         JMenuItem submissions = new JMenuItem("Submissions");
         serviceMenu.add(submissions);
+        submissions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    dispose();
 
-        submissions.addActionListener((ActionEvent e) -> {
-            SwingUtilities.invokeLater(() -> {
-                new viewAllSubmissions().setVisible(true);
-            });
+                    new viewAllSubmissions().setVisible(true);
+                });
+            }
         });
         
         // Help menu
         JMenu helpMenu = new JMenu("Help");
-        JMenuItem instructions = new JMenuItem("Instructions");
-        helpMenu.add(instructions);
+        helpMenu.setForeground(PIUS_WHITE);
+        helpMenu.setFont(new Font("Arial", Font.BOLD, 14));
         
-        instructions.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose(); 
-
-                SwingUtilities.invokeLater(() -> {
-                    new instructionPage().setVisible(true);
-                });
-            }
-        });
-
         JMenuItem resetPassword = new JMenuItem("Reset Password");
+        resetPassword.setBackground(PIUS_WHITE);
+        resetPassword.setForeground(PIUS_NAVY);
+        resetPassword.setFont(new Font("Arial", Font.PLAIN, 14));
         helpMenu.add(resetPassword);
 
         resetPassword.addActionListener(new ActionListener() {
@@ -141,39 +157,64 @@ public class serviceReportingForm extends JFrame {
         // Main panel with padding
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(PIUS_WHITE);
         
         // Title and Checkboxes Panel - vertical layout
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(PIUS_WHITE);
         
         // Title
         JLabel titleLabel = new JLabel("Service Reporting Form");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PIUS_NAVY);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        titlePanel.setBackground(PIUS_WHITE);
         titlePanel.add(titleLabel);
         topPanel.add(titlePanel);
         
         // Add more vertical space after title
-        topPanel.add(Box.createRigidArea(new Dimension(0, 60)));
+        topPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+        
+        // Service Type Label
+        JLabel serviceTypeLabel = new JLabel("Select Service Type:");
+        serviceTypeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        serviceTypeLabel.setForeground(PIUS_NAVY);
+        serviceTypeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel.add(serviceTypeLabel);
+        topPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
         // Service Type checkboxes in a 2x2 grid
         JPanel serviceTypePanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        serviceTypePanel.setBackground(PIUS_WHITE);
+        serviceTypePanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         
         // Create checkboxes with larger font
         Font checkboxFont = new Font("Arial", Font.BOLD, 14);
         
         familyCheckBox = new JCheckBox("Family");
         familyCheckBox.setFont(checkboxFont);
+        familyCheckBox.setForeground(PIUS_NAVY);
+        familyCheckBox.setBackground(PIUS_WHITE);
         
         vulnerablePopCheckBox = new JCheckBox("Vulnerable Populations");
         vulnerablePopCheckBox.setFont(checkboxFont);
+        vulnerablePopCheckBox.setForeground(PIUS_NAVY);
+        vulnerablePopCheckBox.setBackground(PIUS_WHITE);
         
         communityCheckBox = new JCheckBox("Community");
         communityCheckBox.setFont(checkboxFont);
+        communityCheckBox.setForeground(PIUS_NAVY);
+        communityCheckBox.setBackground(PIUS_WHITE);
         
         environmentalCheckBox = new JCheckBox("Environmental");
         environmentalCheckBox.setFont(checkboxFont);
+        environmentalCheckBox.setForeground(PIUS_NAVY);
+        environmentalCheckBox.setBackground(PIUS_WHITE);
         
         serviceTypePanel.add(familyCheckBox);
         serviceTypePanel.add(vulnerablePopCheckBox);
@@ -182,6 +223,7 @@ public class serviceReportingForm extends JFrame {
         
         // Center the service type panel
         JPanel centeredServiceTypePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centeredServiceTypePanel.setBackground(PIUS_WHITE);
         centeredServiceTypePanel.add(serviceTypePanel);
         topPanel.add(centeredServiceTypePanel);
         
@@ -193,21 +235,36 @@ public class serviceReportingForm extends JFrame {
         
         // Form fields in a grid
         JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(PIUS_WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
+        
+        // Form field styling
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
         
         // Description - Large text area
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        formPanel.add(new JLabel("Description of service event:"), gbc);
+        JLabel descriptionLabel = new JLabel("Description of service event:");
+        descriptionLabel.setFont(labelFont);
+        descriptionLabel.setForeground(PIUS_NAVY);
+        formPanel.add(descriptionLabel, gbc);
         
         descriptionArea = new JTextArea(8, 20);
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
+        descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        descriptionArea.setForeground(PIUS_NAVY);
+        
         JScrollPane scrollPane = new JScrollPane(descriptionArea);
         scrollPane.setPreferredSize(new Dimension(400, 150));
+        scrollPane.setBorder(BorderFactory.createLineBorder(PIUS_NAVY, 1));
         
         gbc.gridx = 1;
         formPanel.add(scrollPane, gbc);
@@ -215,38 +272,71 @@ public class serviceReportingForm extends JFrame {
         // Length of service (Hours served)
         gbc.gridx = 0;
         gbc.gridy = 1;
-        formPanel.add(new JLabel("Length of service (hours):"), gbc);
+        JLabel hoursLabel = new JLabel("Length of service (hours):");
+        hoursLabel.setFont(labelFont);
+        hoursLabel.setForeground(PIUS_NAVY);
+        formPanel.add(hoursLabel, gbc);
         
         hoursServedField = new JTextField(10);
+        hoursServedField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
+        hoursServedField.setFont(new Font("Arial", Font.PLAIN, 14));
+        hoursServedField.setForeground(PIUS_NAVY);
         gbc.gridx = 1;
         formPanel.add(hoursServedField, gbc);
         
         // Date of service
         gbc.gridx = 0;
         gbc.gridy = 2;
-        formPanel.add(new JLabel("Date of service (MM/DD/YYYY):"), gbc);
+        JLabel dateLabel = new JLabel("Date of service (MM/DD/YYYY):");
+        dateLabel.setFont(labelFont);
+        dateLabel.setForeground(PIUS_NAVY);
+        formPanel.add(dateLabel, gbc);
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         eventDateField = new JFormattedTextField(dateFormat);
         eventDateField.setColumns(10);
+        eventDateField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
+        eventDateField.setFont(new Font("Arial", Font.PLAIN, 14));
+        eventDateField.setForeground(PIUS_NAVY);
         gbc.gridx = 1;
         formPanel.add(eventDateField, gbc);
         
         // Supervisor Email
         gbc.gridx = 0;
         gbc.gridy = 4;
-        formPanel.add(new JLabel("Supervisor Email:"), gbc);
+        JLabel emailLabel = new JLabel("Supervisor Email:");
+        emailLabel.setFont(labelFont);
+        emailLabel.setForeground(PIUS_NAVY);
+        formPanel.add(emailLabel, gbc);
         
         supervisorEmailField = new JTextField(20);
+        supervisorEmailField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PIUS_NAVY, 1),
+            BorderFactory.createEmptyBorder(4, 6, 4, 6)
+        ));
+        supervisorEmailField.setFont(new Font("Arial", Font.PLAIN, 14));
+        supervisorEmailField.setForeground(PIUS_NAVY);
         gbc.gridx = 1;
         formPanel.add(supervisorEmailField, gbc);
         
         mainPanel.add(formPanel, BorderLayout.CENTER);
         
         // Buttons panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.setBackground(PIUS_WHITE);
         
         submitButton = new JButton("Submit");
+        submitButton.setBackground(PIUS_GOLD);
+        submitButton.setForeground(PIUS_NAVY);
+        submitButton.setFont(new Font("Arial", Font.BOLD, 14));
+        submitButton.setFocusPainted(false);
+        submitButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -255,6 +345,11 @@ public class serviceReportingForm extends JFrame {
         });
         
         cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(LIGHT_GRAY_BG);
+        cancelButton.setForeground(PIUS_NAVY);
+        cancelButton.setFont(new Font("Arial", Font.BOLD, 14));
+        cancelButton.setFocusPainted(false);
+        cancelButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -271,6 +366,8 @@ public class serviceReportingForm extends JFrame {
         // Add buttons to the bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setBackground(PIUS_WHITE);
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         bottomPanel.add(buttonPanel);
         
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -317,9 +414,9 @@ public class serviceReportingForm extends JFrame {
                 "Success", JOptionPane.INFORMATION_MESSAGE);
             
             dispose();
-            
             SwingUtilities.invokeLater(() -> {
-                new studentHomepage().setVisible(true);
+                studentHomepage homepage = new studentHomepage();
+                homepage.setVisible(true);
             });
         } 
         catch (SQLException se) {
