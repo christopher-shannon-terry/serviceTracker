@@ -364,14 +364,13 @@ public class adminHomepage extends JFrame {
         valueLabel.setFont(new Font("Arial", Font.BOLD, 32));
         
         // Store references to value labels for later updates
-        if (title.equals("Total Students")) {
-            totalStudentsValue = valueLabel;
-        } else if (title.equals("Total Submissions")) {
-            totalSubmissionsValue = valueLabel;
-        } else if (title.equals("Pending Approvals")) {
-            pendingApprovalsValue = valueLabel;
-        } else if (title.equals("Approved Services")) {
-            approvedServicesValue = valueLabel;
+        switch (title) {
+            case "Total Students" -> totalStudentsValue = valueLabel;
+            case "Total Submissions" -> totalSubmissionsValue = valueLabel;
+            case "Pending Approvals" -> pendingApprovalsValue = valueLabel;
+            case "Approved Services" -> approvedServicesValue = valueLabel;
+            default -> {
+            }
         }
         
         card.add(titleLabel, BorderLayout.NORTH);
