@@ -10,17 +10,23 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import com.piusxi.admin.backend.generateReport;
+import com.piusxi.admin.backend.serviceStatus;
 
 public class allFreshmen extends JFrame {
     private JTextField searchField;
@@ -112,6 +118,92 @@ public class allFreshmen extends JFrame {
         add(mainPanel);
         loadFreshmenData();
         addEventListeners();
+        createMenuBar();
+    }
+
+    public void createMenuBar() {
+        JMenuBar navigationBar = new JMenuBar();
+
+        JMenu home = new JMenu("Home");
+        JMenuItem dashboard = new JMenuItem("Dashboard");
+        home.add(dashboard);
+        dashboard.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new adminHomepage().setVisible(true);
+            });
+        });
+
+        JMenuItem exit = new JMenuItem("Exit");
+        home.add(exit);
+        exit.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            System.exit(0);
+        });
+
+        JMenu studentsMenu = new JMenu("Students");
+        JMenuItem allStudents = new JMenuItem("All");
+        studentsMenu.add(allStudents);
+        allStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new allStudents().setVisible(true);
+            });
+        });
+
+        JMenuItem sophomoreStudents = new JMenuItem("Sophomores");
+        studentsMenu.add(sophomoreStudents);
+        sophomoreStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allSophomores().setVisible(true);
+            });
+        });
+        
+        JMenuItem juniorStudents = new JMenuItem("Juniors");
+        studentsMenu.add(juniorStudents);
+        juniorStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allJuniors().setVisible(true);
+            });
+        });
+
+        JMenuItem seniorStudents = new JMenuItem("Seniors");
+        studentsMenu.add(seniorStudents);
+        seniorStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allSeniors().setVisible(true);
+            });
+        });
+
+        JMenu reports = new JMenu("Reports");
+        JMenuItem generateReports = new JMenuItem("Generate Report");
+        reports.add(generateReports);
+        generateReports.addActionListener((ActionEvent e) -> {
+            try {
+                String report = generateReport.generateFile(null);
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
+            catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+
+        navigationBar.add(home);
+        navigationBar.add(studentsMenu);
+        navigationBar.add(reports);
+
+        setJMenuBar(navigationBar);
     }
     
     private void loadFreshmenData() {
@@ -409,13 +501,37 @@ public class allFreshmen extends JFrame {
             formScrollPane.setBorder(null);
             mainPanel.add(formScrollPane);
             
-            // Close button
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
             JButton closeButton = new JButton("Close");
-            closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            closeButton.addActionListener(e -> submissionFrame.dispose());
-            
+            JButton approveButton = new JButton("Approve");
+            JButton rejectButton = new JButton("Reject");
+
+            closeButton.addActionListener((ActionEvent e) -> {
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new adminHomepage().setVisible(true);
+                });
+            });
+
+            approveButton.addActionListener((ActionEvent e) -> {
+                serviceStatus.setApproved();
+
+                dispose();
+            });
+
+            rejectButton.addActionListener((ActionEvent e) -> {
+                serviceStatus.setRejected();
+
+                dispose();
+            });
+
+            buttonPanel.add(rejectButton);
+            buttonPanel.add(approveButton);
+            buttonPanel.add(closeButton);
+
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-            mainPanel.add(closeButton);
+            mainPanel.add(buttonPanel);
             
             submissionFrame.add(mainPanel);
             submissionFrame.setVisible(true);

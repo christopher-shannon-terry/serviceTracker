@@ -5,10 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.piusxi.admin.backend.generateReport;
 
@@ -45,85 +44,75 @@ public class adminHomepage extends JFrame {
         JMenu home = new JMenu("Home");
         JMenuItem exit = new JMenuItem("Exit");
         home.add(exit);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
+        exit.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            System.exit(0);
         });
 
         JMenu studentsMenu = new JMenu("Students");
         JMenuItem allStudents = new JMenuItem("All");
         studentsMenu.add(allStudents);
-        allStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /* 
-                 * Will go to a new page
-                 * Shows their name and grade probably and ability to click on them 
-                 * maybe sorted alphabetically or by grade
-                 * will have a search bar to search for name in
-                 * Clicking on them will take them to page
-                 * Where it shows their submissions or something (will come back to it) 
-                 */
-            }
+        allStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new allStudents().setVisible(true);
+            });
         });
 
         JMenuItem freshmenStudents = new JMenuItem("Freshmen");
         studentsMenu.add(freshmenStudents);
-        freshmenStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                allFreshmen freshmenService = new allFreshmen();
-                freshmenService.setVisible(true);
-            }
+        freshmenStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allFreshmen().setVisible(true);
+            });
         });
 
         JMenuItem sophomoreStudents = new JMenuItem("Sophomores");
         studentsMenu.add(sophomoreStudents);
-        sophomoreStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                allSophomores sophomoreService = new allSophomores();
-                sophomoreService.setVisible(true);
-            }
+        sophomoreStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allSophomores().setVisible(true);
+            });
         });
         
         JMenuItem juniorStudents = new JMenuItem("Juniors");
         studentsMenu.add(juniorStudents);
-        juniorStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                allJuniors juniorService = new allJuniors();
-                juniorService.setVisible(true);
-            }
+        juniorStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allJuniors().setVisible(true);
+            });
         });
 
         JMenuItem seniorStudents = new JMenuItem("Seniors");
         studentsMenu.add(seniorStudents);
-        seniorStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                allSeniors seniorService = new allSeniors();
-                seniorService.setVisible(true);
-            }
+        seniorStudents.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new allSeniors().setVisible(true);
+            });
         });
 
         JMenu reports = new JMenu("Reports");
         JMenuItem generateReports = new JMenuItem("Generate Report");
         reports.add(generateReports);
-        generateReports.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String report = generateReport.generateFile(null);
-                }
-                catch (SQLException se) {
-                    se.printStackTrace();
-                }
-                catch (IOException ie) {
-                    ie.printStackTrace();
-                }
+        generateReports.addActionListener((ActionEvent e) -> {
+            try {
+                String report = generateReport.generateFile(null);
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
+            catch (IOException ie) {
+                ie.printStackTrace();
             }
         });
 
@@ -151,17 +140,14 @@ public class adminHomepage extends JFrame {
         JLabel nameLabel = new JLabel("");
 
         JButton viewSubmissionsButton = new JButton("View Submissions");
-        viewSubmissionsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /*
-                 * Just redirects to the same page the all dropdown option in the students navBar does
-                 */
-            }
+        viewSubmissionsButton.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new allStudents().setVisible(true);
+            });
         });
 
-        
-        
         viewSubmissionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidePanel.add(viewSubmissionsButton);
 

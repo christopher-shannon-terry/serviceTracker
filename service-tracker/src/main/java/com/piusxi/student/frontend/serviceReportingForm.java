@@ -317,9 +317,9 @@ public class serviceReportingForm extends JFrame {
                 "Success", JOptionPane.INFORMATION_MESSAGE);
             
             dispose();
+            
             SwingUtilities.invokeLater(() -> {
-                studentHomepage homepage = new studentHomepage();
-                homepage.setVisible(true);
+                new studentHomepage().setVisible(true);
             });
         } 
         catch (SQLException se) {
