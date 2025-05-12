@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
@@ -26,11 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.piusxi.admin.backend.adminLogin;
+import com.piusxi.admin.backend.adminLogin.adminResult;
+import com.piusxi.admin.frontend.adminHomepage;
 import com.piusxi.student.backend.login;
 import com.piusxi.student.backend.login.loginResult;
 import com.piusxi.student.backend.studentSession;
-import com.piusxi.admin.backend.adminLogin.adminResult;
-import com.piusxi.admin.frontend.adminHomepage;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 import com.piusxi.student.database.studentInformationDatabase;
 
@@ -136,19 +135,22 @@ public class studentLogin extends JFrame {
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        loginButton.addActionListener((ActionEvent e) -> {
+
+            SwingUtilities.invokeLater(() -> {
                 loginToStudentHomePage();
-            }
+            });
         });
+
+        // Press enter to login now
+        getRootPane().setDefaultButton(loginButton);
         
         createAccountButton = new JButton("Create New Account");
-        createAccountButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        createAccountButton.addActionListener((ActionEvent e) -> {
+
+            SwingUtilities.invokeLater(() -> {
                 openCreateAccountForm();
-            }
+            });
         });
 
         buttonPanel.add(loginButton);
@@ -187,9 +189,9 @@ public class studentLogin extends JFrame {
             dispose();
 
             SwingUtilities.invokeLater(() -> {
-                studentHomepage homepage = new studentHomepage();
-                homepage.setVisible(true);
+                new studentHomepage().setVisible(true);
             });
+
             return;
         }
 
@@ -203,9 +205,9 @@ public class studentLogin extends JFrame {
             dispose();
 
             SwingUtilities.invokeLater(() -> {
-                adminHomepage homepage = new adminHomepage();
-                homepage.setVisible(true);
+                new adminHomepage().setVisible(true);
             });
+
             return;
         }
 
@@ -218,8 +220,7 @@ public class studentLogin extends JFrame {
         dispose();
 
         SwingUtilities.invokeLater(() -> {
-            createAccountForm form = new createAccountForm();
-            form.setVisible(true);
+            new createAccountForm().setVisible(true);
         });
     }
     

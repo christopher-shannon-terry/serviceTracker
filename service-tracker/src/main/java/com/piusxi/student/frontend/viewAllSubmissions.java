@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -123,11 +122,12 @@ public class viewAllSubmissions extends JFrame {
         
         // Close button at the bottom
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
+        closeButton.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new studentHomepage().setVisible(true);
+            });
         });
         
         JPanel buttonPanel = new JPanel();
@@ -201,21 +201,21 @@ public class viewAllSubmissions extends JFrame {
                 }
                 
                 String query = "SELECT * FROM service_submissions WHERE submission_id = ?";
-                PreparedStatement statement = connection.prepareStatement(query);
-                statement.setString(1, submissionId);
-                ResultSet resultSet = statement.executeQuery();
-                
-                if (resultSet.next()) {
-                    showSubmissionForm(resultSet);
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.setString(1, submissionId);
+                    ResultSet resultSet = statement.executeQuery();
+                    
+                    if (resultSet.next()) {
+                        showSubmissionForm(resultSet);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this,
+                                "Submission details not found.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
+                    resultSet.close();
                 }
-                else {
-                    JOptionPane.showMessageDialog(this,
-                        "Submission details not found.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                
-                resultSet.close();
-                statement.close();
             }
             catch (SQLException se) {
                 JOptionPane.showMessageDialog(this,
@@ -345,26 +345,19 @@ public class viewAllSubmissions extends JFrame {
         JMenu fileMenu = new JMenu("Home");
         JMenuItem dashboard = new JMenuItem("Dashboard");
         fileMenu.add(dashboard);
-        dashboard.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-
-                SwingUtilities.invokeLater(() -> {
-                    studentHomepage homepage = new studentHomepage();
-                    homepage.setVisible(true);
-                });
-            }
+        dashboard.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new studentHomepage().setVisible(true);
+            });
         });
 
         JMenuItem exit = new JMenuItem("Exit");
         fileMenu.add(exit);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                System.exit(0);
-            }
+        exit.addActionListener((ActionEvent e) -> {
+            dispose();
+            System.exit(0);
         });
         
         // Service menu
@@ -372,12 +365,12 @@ public class viewAllSubmissions extends JFrame {
         JMenuItem serviceForm = new JMenuItem("Submit Service");
         serviceMenu.add(serviceForm);
 
-        serviceForm.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                serviceReportingForm serviceForm = new serviceReportingForm();
-                serviceForm.setVisible(true);
-            }
+        serviceForm.addActionListener((ActionEvent e) -> {
+            dispose();
+
+            SwingUtilities.invokeLater(() -> {
+                new serviceReportingForm().setVisible(true);
+            });
         });
         
         // Help menu
@@ -385,25 +378,23 @@ public class viewAllSubmissions extends JFrame {
         JMenuItem instructions = new JMenuItem("Instructions");
         helpMenu.add(instructions);
         
-        instructions.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                instructionPage instructionPage = new instructionPage();
-                instructionPage.setVisible(true);
-            }
+        instructions.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new instructionPage().setVisible(true);
+            });
         });
 
         JMenuItem resetPassword = new JMenuItem("Reset Password");
         helpMenu.add(resetPassword);
 
-        resetPassword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-
-                forgotPasswordForm form = new forgotPasswordForm();
-                form.setVisible(true);
-            }
+        resetPassword.addActionListener((ActionEvent e) -> {
+            dispose();
+            
+            SwingUtilities.invokeLater(() -> {
+                new forgotPasswordForm().setVisible(true);
+            });
         });
         
         // Add menus to menu bar
@@ -416,10 +407,10 @@ public class viewAllSubmissions extends JFrame {
     }
     
     
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             viewAllSubmissions frame = new viewAllSubmissions();
             frame.setVisible(true);
         });
-    }
+    } */
 }
