@@ -276,4 +276,10 @@ public class studentLogin extends JFrame {
             form.setVisible(true);
         });
     }
+    
+    public static void main(String[] args) { 
+        SwingUtilities.invokeLater(() -> {
+            new studentLogin().setVisible(true);
+        });
+    }
 }
