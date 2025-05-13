@@ -12,12 +12,12 @@ import java.util.Map;
 import com.piusxi.student.database.serviceSubmissionDatabase;
 import com.piusxi.student.database.studentInformationDatabase;
 
-public class showFreshmen {
+public class showStudents {
 
     public static Connection studentConnection = null;
     public static Connection serviceConnection = null;
 
-    public static Object[][] getFreshmenInfo(Connection connection) {
+    public static Object[][] getStudentInfo(Connection connection) {
         PreparedStatement countPS = null;
         PreparedStatement infoPS = null;
         ResultSet countResults = null;
@@ -29,8 +29,8 @@ public class showFreshmen {
             if (studentConnection == null) {
                 return new Object[0][0];
             }
-            String freshmenCountQuery = "SELECT COUNT(*) FROM Students WHERE grade_year = 9";
-            countPS = studentConnection.prepareStatement(freshmenCountQuery);
+            String studentCountQuery = "SELECT COUNT(*) FROM Students";
+            countPS = studentConnection.prepareStatement(studentCountQuery);
             countResults = countPS.executeQuery();
             int rowCount = 0;
 
@@ -38,8 +38,8 @@ public class showFreshmen {
                 rowCount = countResults.getInt(1);
             }
 
-            String freshmenInfoQuery = "SELECT student_id, first_name, last_name FROM Students WHERE grade_year = 9";
-            infoPS = studentConnection.prepareStatement(freshmenInfoQuery);
+            String studentInfoQuery = "SELECT student_id, first_name, last_name FROM Students";
+            infoPS = studentConnection.prepareStatement(studentInfoQuery);
             infoResults = infoPS.executeQuery();
 
             Object[][] data = new Object[rowCount][3];
@@ -79,29 +79,29 @@ public class showFreshmen {
         }
     }
 
-    public static Object[][] getFreshmenService(Connection connection) {
+    public static Object[][] getStudentService(Connection connection) {
         PreparedStatement servicePS = null;
         ResultSet serviceResults = null;
         ArrayList<Object[]> serviceData = new ArrayList<>();
 
         try {
-            Object[][] freshmenInfo = getFreshmenInfo(connection);
+            Object[][] studentInfo = getStudentInfo(connection);
 
-            if (freshmenInfo.length == 0) {
+            if (studentInfo.length == 0) {
                 return new Object[0][0];
             }
 
             // Hash map for quick and easy look up
-            Map<Integer, String[]> freshmenMap = new HashMap<>();
+            Map<Integer, String[]> studentMap = new HashMap<>();
             StringBuilder idList = new StringBuilder();
             boolean first = true;
 
-            for (Object[] student : freshmenInfo) {
+            for (Object[] student : studentInfo) {
                 int studentID = (Integer) student[0];
                 String firstName = (String) student[1];
                 String lastName = (String) student[2];
 
-                freshmenMap.put(studentID, new String[] {firstName, lastName});
+                studentMap.put(studentID, new String[] {firstName, lastName});
 
                 if (!first) {
                     idList.append(",");
@@ -128,13 +128,13 @@ public class showFreshmen {
             while (serviceResults.next()) {
                 int studentID = serviceResults.getInt("student_id");
 
-                if (freshmenMap.containsKey(studentID)) {
-                    String[] studentInfo = freshmenMap.get(studentID);
+                if (studentMap.containsKey(studentID)) {
+                    String[] studentInformation = studentMap.get(studentID);
 
                     Object[] row = new Object[7];
                     row[0] = studentID;
-                    row[1] = studentInfo[0]; // first_name
-                    row[2] = studentInfo[1]; // last_name
+                    row[1] = studentInformation[0]; // first_name
+                    row[2] = studentInformation[1]; // last_name
                     row[3] = serviceResults.getString("service_type");
                     row[4] = serviceResults.getDouble("service_event_length");
                     row[5] = serviceResults.getString("supervisor_email");

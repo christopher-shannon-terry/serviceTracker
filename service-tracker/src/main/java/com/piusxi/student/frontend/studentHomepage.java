@@ -546,11 +546,4 @@ public class studentHomepage extends JFrame {
             "Data refreshed successfully!",
             "Refresh", JOptionPane.INFORMATION_MESSAGE);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            studentHomepage homepage = new studentHomepage();
-            homepage.setVisible(true);
-        }); 
-    }
 }

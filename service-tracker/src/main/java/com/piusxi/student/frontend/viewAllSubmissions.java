@@ -508,11 +508,4 @@ public class viewAllSubmissions extends JFrame {
         // Set the menu bar to the frame
         setJMenuBar(menuBar);
     }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            viewAllSubmissions frame = new viewAllSubmissions();
-            frame.setVisible(true);
-        });
-    }
 }

@@ -737,11 +737,4 @@ public class allFreshmen extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
     }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            allFreshmen frame = new allFreshmen();
-            frame.setVisible(true);
-        });
-    }
 }

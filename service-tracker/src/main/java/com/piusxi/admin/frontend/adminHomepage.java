@@ -634,11 +634,4 @@ public class adminHomepage extends JFrame {
             "Data refreshed successfully!",
             "Refresh", JOptionPane.INFORMATION_MESSAGE);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            adminHomepage homepage = new adminHomepage();
-            homepage.setVisible(true);
-        });
-    }
 }

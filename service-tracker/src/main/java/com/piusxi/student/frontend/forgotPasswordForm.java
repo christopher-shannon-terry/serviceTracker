@@ -297,11 +297,4 @@ public class forgotPasswordForm extends JFrame {
         // Set main panel as the content pane
         setContentPane(mainPanel);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            forgotPasswordForm form = new forgotPasswordForm();
-            form.setVisible(true);
-        });
-    }
 }

@@ -529,11 +529,4 @@ public class serviceReportingForm extends JFrame {
     private boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            serviceReportingForm form = new serviceReportingForm();
-            form.setVisible(true);
-        });
-    }
 }

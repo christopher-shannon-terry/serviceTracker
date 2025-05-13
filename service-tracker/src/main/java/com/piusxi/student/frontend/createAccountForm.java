@@ -388,11 +388,4 @@ public class createAccountForm extends JFrame {
             login.setVisible(true);
         });
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            createAccountForm form = new createAccountForm();
-            form.setVisible(true);
-        });
-    }
 }

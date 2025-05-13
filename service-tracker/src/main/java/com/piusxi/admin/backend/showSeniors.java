@@ -168,21 +168,4 @@ public class showSeniors {
             }   
         }
     }
-
-    public static void main(String[] args) {
-        System.out.println("Attempting database connection...");
-        Connection connection = studentInformationDatabase.connect();
-        System.out.println("Connection successful, fetching data...");
-    
-        Object[][] data = getSeniorInfo(connection);
-        System.out.println("Data fetched, printing results...");
-    
-        System.out.println(Arrays.deepToString(data));
-
-        System.out.println("Fetching service information for seniors...");
-        Object[][] serviceData = getSeniorService(connection);
-        System.out.println("Service data fetched, printing results...");
-        
-        System.out.println(Arrays.deepToString(serviceData));
-    }
 }

@@ -258,9 +258,4 @@ public class instructionPage extends JFrame {
         panel.add(contentArea);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
-
-    public static void main(String[] args) {
-        instructionPage instructions = new instructionPage();
-        instructions.setVisible(true);
-    }
 }
