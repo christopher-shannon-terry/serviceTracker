@@ -6,7 +6,7 @@
 
 💻 A simple desktop application built with Java & Swing to digitally track service experiences.
 
-🏫 Made with for Pius XI High School.
+🏫 Made for Pius XI High School.
 
 * * *
 
@@ -26,5 +26,6 @@
         ./setup.sh
     
     > This script will check for and install all dependencies, getting your project ready to go!
+    > **Important:** Please **do not modify** ```setup.sh``` unless you really know what you're doing. Changes to this script can break things.
     
 4.  🚀 **Happy Coding!**
