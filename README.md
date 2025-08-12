@@ -19,7 +19,7 @@
     
 2.  📂 **Navigate to the Directory** 
     
-        cd <serviceTracker>
+        cd serviceTracker
     
 3.  ⚙️ **Run the Setup Script**
     
