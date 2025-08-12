@@ -12,22 +12,6 @@ public class adminDatabase {
     public static final String USER = "general";
     public static final String PASSWORD = "123456";
 
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/admin_database";
-    public static final String USER = "alanmitchell";
-    public static final String PASSWORD = "922925"; */
-
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/admin_database";
-    public static final String USER = "joshuachristian";
-    public static final String PASSWORD = "123456"; */
-
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/admin_database";
-    public static final String USER = "ethancobb";
-    public static final String PASSWORD = "123456"; */
-
-    /* public static final String DB_URL = "jdbc:mariadb://localhost:3306/admin_database";
-    public static final String USER = "shannonterry";
-    public static final String PASSWORD = "123456"; */
-
     public static Connection connect() {
         Connection connection = null;
 
