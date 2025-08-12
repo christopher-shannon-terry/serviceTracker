@@ -1,17 +1,30 @@
-# Service Tracker - Pius XI Catholic High School
+🤝 Service Hours Tracker for Pius XI High School
+================================================
 
-## Project Overview
-Service Tracker is a comprehensive software application designed for Pius XI Catholic High School to manage and track student service activities. The application provides a streamlined process for students to log service hours and administrators to approve and manage service records.
+📝 Project Overview
+-------------------
 
-## Features
-- Student account creation and management
-- Service activity logging and submission
-- Administrative review and approval process
-- Service hour tracking and reporting
-- Email confirmation to service beneficiary
-- Secure authentication system
+💻 A simple desktop application built with Java & Swing to digitally track service experiences.
 
-## Project Structure
-- `admin/` - Administrative interface and functionality
-- `student/` - Student user interface and account management
-- `database/` - Database connection and data access layer
+🏫 Made with for Pius XI High School.
+
+* * *
+
+👨‍💻 For Developers
+--------------------
+
+1.  📥 **Clone the Repository**
+    
+        git clone https://github.com/christopher-shannon-terry/serviceTracker
+    
+2.  📂 **Navigate to the Directory** 
+    
+        cd <serviceTracker>
+    
+3.  ⚙️ **Run the Setup Script**
+    
+        ./setup.sh
+    
+    > This script will check for and install all dependencies, getting your project ready to go!
+    
+4.  🚀 **Happy Coding!**
