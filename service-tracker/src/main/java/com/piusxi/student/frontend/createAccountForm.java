@@ -345,7 +345,8 @@ public class createAccountForm extends JFrame {
         try {
             int year = Integer.parseInt(graduationYear);
             int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-            if (year < currentYear || year > currentYear + 4) {
+            
+            if (year < currentYear) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid graduation year.", 
                     "Validation Error", JOptionPane.ERROR_MESSAGE);
                 return false;
