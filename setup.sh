@@ -20,8 +20,10 @@ print_message() {
 print_message "Checking for MariaDB..."
 if ! command -v mysql &> /dev/null; then
     print_message "MariaDB not found. Installing..."
+    
+    # quiet call for system package updates
     sudo apt update -y -qq
-    sudo apt install -yqq mariadb-server
+    sudo apt install -y mariadb-server
 else
     print_message "MariaDB already installed."
 fi
@@ -40,18 +42,18 @@ if command -v java &> /dev/null; then
     else
         echo "An existing JDK was found, but its version ($VERSION_ON_SYSTEM) is below the required version: $MINIMUM_JDK_VERSION"
         print_message "Installing minimum required version..."
-        sudo apt install -yqq "openjdk-$MINIMUM_JDK_VERSION-jdk"
+        sudo apt install -y "openjdk-$MINIMUM_JDK_VERSION-jdk"
     fi
 else
     print_message "JDK not found. Installing minimum required version..."
-    sudo apt install -yqq "openjdk-$MINIMUM_JDK_VERSION-jdk"
+    sudo apt install -y "openjdk-$MINIMUM_JDK_VERSION-jdk"
 fi
 
 # --- Check for Maven ---
 print_message "Checking for Maven..."
 if ! command -v mvn &> /dev/null; then
     echo "Maven not found. Installing..."
-    sudo apt install -yqq maven
+    sudo apt install -y maven
 else
     echo "Maven is already installed."
 fi
