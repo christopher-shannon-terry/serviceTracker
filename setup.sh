@@ -9,12 +9,46 @@ ADMIN_PASS="Password123!"
 ADMIN_FNAME="general"
 ADMIN_LNAME="general"
 
-# Print messages
+# --- Helper Functions ---
+
+# Print messages in a standard format
 print_message() {
     echo "--------------------------------------------------"
     echo "$1"
     echo "--------------------------------------------------"
 }
+
+# Function to remove all managed software
+clean_system() {
+    print_message "--- Starting Clean Operation ---"
+
+    # --- Remove Java (all versions) ---
+    print_message "Removing Java (all versions)..."
+    sudo apt-get remove --purge -y "openjdk-*-jdk" "openjdk-*-jre"
+    sudo apt-get autoremove --purge -y
+    echo "Java removal complete."
+
+    # --- Remove MariaDB ---
+    print_message "Removing MariaDB..."
+    sudo apt-get remove --purge -y mariadb-server mariadb-client mariadb-common
+    sudo apt-get autoremove --purge -y
+    sudo rm -rf /var/lib/mysql /etc/mysql
+    echo "MariaDB removal complete."
+
+    # --- Remove Maven ---
+    print_message "Removing Maven..."
+    sudo apt-get remove --purge -y maven
+    sudo apt-get autoremove --purge -y
+    echo "Maven removal complete."
+
+    print_message "--- Clean Operation Finished ---"
+    exit 0
+}
+
+# Check for the --clean flag as the first argument
+if [ "$1" == "--clean" ]; then
+    clean_system
+fi
 
 # --- Check and install MariaDB ---
 print_message "Checking for MariaDB..."
